@@ -43,7 +43,6 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
   let NERDTreeAutoCenter=1
   let NERDTreeShowHidden=1
   let NERDTreeIgnore=['\~$','\.swp']
-Plug 'Xuyuanp/nerdtree-git-plugin'
   let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "✹",
     \ "Staged"    : "✚",
@@ -55,6 +54,11 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
     \ "Clean"     : "✔︎",
     \ "Unknown"   : "?"
     \ }
+  " Open a NERDTree automatically when vim starts up if no files were specified
+  " Will print a error..
+  "autocmd StdinReadPre * let s:std_in=1
+  "autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
 " Multiple languages hightlight supports
 Plug 'sheerun/vim-polyglot'
 " Git support 
@@ -124,6 +128,7 @@ nmap <leader>[ :bp<cr>
 " Disable auto comment on next line
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
+Plug 'Xuyuanp/nerdtree-git-plugin'
 " Put these lines at the very end of your vimrc file.
 " Load all plugins now.
 " Plugins need to be added to runtimepath before helptags can be generated.

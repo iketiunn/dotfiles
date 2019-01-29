@@ -14,7 +14,6 @@ brew "asdf"
   # Read more to setup: https://github.com/asdf-vm/asdf-nodejs
   brew "coreutils"
   brew "gpg"
-cask "java" # Not work if using asdf to install
 
 # Cli thing
 brew "jq"
@@ -30,10 +29,12 @@ cask_args appdir: "/Applications"
 # Cask / GUI
 #cask "font-source-code-pro-for-powerline"
 cask "docker"
+cask "google-cloud-sdk"
 cask "spectacle"
 cask "iterm2"
 cask "visual-studio-code"
 cask "brave-browser"
 cask "iina" # The modern media player for macOS
-cask "sqlectron"
+cask "itsycal" # Itsycal is a tiny menu bar calendar.
+#cask "sqlectron" # No inline edit
 
