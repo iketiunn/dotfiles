@@ -6,6 +6,7 @@ brew "mas"
 
 # General dev
 brew "cmake"
+brew "cocoapods" # For iOS dev
 brew "libpng"
 brew "ragel"
 brew "git"
@@ -16,13 +17,22 @@ brew "asdf"
   brew "gpg"
 
 # Cli thing
-brew "jq"
-brew "tldr"
-brew 'bash'
-brew 'bash-completion'
+brew "bash"
+brew "bash-completion"
+brew "coreutils"
+brew "zsh"
+brew "zsh-syntax-highlighting"
+brew "zsh-history-substring-search"
+brew "zsh-completions"
+brew "zsh-autosuggestions"
+brew "shellcheck"
+brew "tmux"
 brew "httpie"
+brew "tldr"
+brew "jq"
 brew "fd"
 brew "fzf"
+brew "the_silver_searcher" # ag, grep for code
 
 # Directory to install
 cask_args appdir: "/Applications"
@@ -32,9 +42,10 @@ cask "docker"
 cask "google-cloud-sdk"
 cask "spectacle"
 cask "iterm2"
+cask "alacritty"
 cask "visual-studio-code"
+cask "tableplus" # Tool for Relational Database
 cask "brave-browser"
 cask "iina" # The modern media player for macOS
 cask "itsycal" # Itsycal is a tiny menu bar calendar.
-#cask "sqlectron" # No inline edit
-
+cask "the-unarchiver"

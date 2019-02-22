@@ -1,8 +1,9 @@
+set nocompatible
 " Check Vundle is installed or not
-filetype off
-    
+filetype plugin on
+
 " Install vim-plug if not installed yet
-if empty(glob("~/.vim/autoload/plug.vim")) 
+if empty(glob("~/.vim/autoload/plug.vim"))
     echo "Installing vim-plug.."
     echo ""
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dir https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -11,32 +12,32 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " Theme/Status bar
-Plug '0w0/xoria256.vim'
+Plug 'ikewat/xoria256.vim'
 Plug 'itchyny/lightline.vim'
   set laststatus=2
   set noshowmode
-  let g:lightline = {
-    \ 'colorscheme': 'wombat',
-    \ 'active': {
-    \   'left': [['mode', 'paste'], ['filename', 'modified']],
-    \   'right': [['lineinfo'], ['percent'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
-    \ },
-    \ 'component_expand': {
-    \   'linter_warnings': 'LightlineLinterWarnings',
-    \   'linter_errors': 'LightlineLinterErrors',
-    \   'linter_ok': 'LightlineLinterOK'
-    \ },
-    \ 'component_type': {
-    \   'readonly': 'error',
-    \   'linter_warnings': 'warning',
-    \   'linter_errors': 'error'
-    \ },
-    \ }
+  Plug 'maximbaz/lightline-ale'
+    let g:lightline = {}
+    let g:lightline.component_expand = {
+      \  'linter_checking': 'lightline#ale#checking',
+      \  'linter_warnings': 'lightline#ale#warnings',
+      \  'linter_errors': 'lightline#ale#errors',
+      \  'linter_ok': 'lightline#ale#ok',
+      \ }
+    let g:lightline.component_type = {
+      \     'linter_checking': 'left',
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \     'linter_ok': 'left',
+      \ }
+    " Somehow it's not working, disable now
+    "let g:lightline.active = { 'right': [[ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ]] }
 " Utils
 Plug 'Yggdroot/LeaderF', { 'do': './install.sh' } " Fuzzy finder
   let g:Lf_ShortcutF = '<C-P>'
   let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
   map <C-n> :NERDTreeToggle<CR>
   let g:NERDTreeNodeDelimiter = "\u00a0" " Fix ^G
   let NERDTreeShowLineNumbers=1
@@ -61,16 +62,34 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
 " Multiple languages hightlight supports
 Plug 'sheerun/vim-polyglot'
-" Git support 
-"Plug 'tpope/vim-fugitive'
-"Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-markdown'
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'pangloss/vim-javascript'
+  let g:javascript_plugin_jsdoc = 1
+Plug 'reasonml-editor/vim-reason'
 
+" Git support
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+
+" Syntax checker
+Plug 'w0rp/ale'
+  let g:ale_fixers = {
+    \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \   'javascript': ['eslint'],
+    \}
+  let g:ale_fix_on_save = 1
+  " Enable completion where available.
+  " This setting must be set before ALE is loaded.
+  let g:ale_completion_enabled = 1
 call plug#end()
 
 " Basic setting
 colorscheme xoria256
 syntax on
 "set t_Co=256
+set signcolumn=yes " Keep signcolumn alway on
+highlight clear SignColumn " Make clear cloro on signcolumn
 set guioptions-=T " Removes top toolbar
 set guioptions-=r " Removes right hand scroll bar
 set go-=L " Removes left hand scroll bar
@@ -94,16 +113,14 @@ set visualbell           " don't beep
 set noerrorbells         " don't beep
 set autowrite  " Save on buffer switch
 set autoread   " Autorefreshing when file changed
-" Currenlly cursorline cause laggy on the scroll
-"set cursorline
-"set signcolumn=yes
+set completeopt+=noinsert
 " Swap files
 set backupdir=~/.vim/backup
 set directory=~/.vim/swap
 
 " Key mapping
-let mapleader = ","
-let g:mapleader = ","
+let mapleader = " "
+let g:mapleader = " "
 " Fast saves
 nmap <leader>w :w!<cr>
 " Fast quit
@@ -114,7 +131,7 @@ nmap <leader>f <C-F><cr>
 nmap <leader>b <C-B><cr>
 
 " Easy escaping to normal model
-imap jk <esc>
+imap jk <esc><esc>:w<cr>
 " Fast add semicolon at end of line
 imap <leader>; <esc>A;<cr>
 
@@ -122,17 +139,8 @@ imap <leader>; <esc>A;<cr>
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 
 " Quickly go forward or backward to buffer
-nmap <leader>] :bn<cr> 
+nmap <leader>] :bn<cr>
 nmap <leader>[ :bp<cr>
 
 " Disable auto comment on next line
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
-Plug 'Xuyuanp/nerdtree-git-plugin'
-" Put these lines at the very end of your vimrc file.
-" Load all plugins now.
-" Plugins need to be added to runtimepath before helptags can be generated.
-packloadall
-" Load all of the helptags now, after plugins have been loaded.
-" All messages and errors will be ignored.
-silent! helptags ALL
