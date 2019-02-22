@@ -33,9 +33,6 @@ Plug 'itchyny/lightline.vim'
     " Somehow it's not working, disable now
     "let g:lightline.active = { 'right': [[ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ]] }
 " Utils
-Plug 'Yggdroot/LeaderF', { 'do': './install.sh' } " Fuzzy finder
-  let g:Lf_ShortcutF = '<C-P>'
-  let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
   map <C-n> :NERDTreeToggle<CR>
@@ -59,6 +56,13 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
   " Will print a error..
   "autocmd StdinReadPre * let s:std_in=1
   "autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" Fzf
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
+  let g:fzf_layout = { 'down': '~20%' }
+  nnoremap <silent> <C-P> :Files <cr>
+  "nmap <leader>p <C-P><cr>
 
 " Multiple languages hightlight supports
 Plug 'sheerun/vim-polyglot'
