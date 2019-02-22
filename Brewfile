@@ -1,7 +1,8 @@
 # Deps for install
 tap "homebrew/bundle"
 tap "homebrew/core"
-tap "homebrew/cask-versions" # Alternate versions of Casks for the Homebrew Cask project.
+tap "homebrew/cask-fonts"
+  cask "font-source-code-pro-for-powerline"
 brew "mas"
 
 # General dev
@@ -38,7 +39,6 @@ brew "the_silver_searcher" # ag, grep for code
 # Directory to install
 cask_args appdir: "/Applications"
 # Cask / GUI
-#cask "font-source-code-pro-for-powerline"
 cask "docker"
 cask "google-cloud-sdk"
 cask "spectacle"

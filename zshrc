@@ -2,6 +2,7 @@
 autoload -Uz compinit && compinit
 zstyle ':completion:*' menu select # Arrow-key driven interface
 setopt COMPLETE_ALIASES
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' # Case-insensitive matching
 # Enter dir without cd
 setopt autocd autopushd
 # Same ">", ">>" behavior like bash
