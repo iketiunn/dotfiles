@@ -20,6 +20,7 @@ brew "asdf"
 # Cli thing
 brew "bash"
 brew "bash-completion"
+brew "bat" # Better cat
 brew "coreutils"
 brew "zsh"
 brew "zsh-syntax-highlighting"
@@ -27,6 +28,7 @@ brew "zsh-history-substring-search"
 brew "zsh-completions"
 brew "zsh-autosuggestions"
 brew "shellcheck"
+brew "tree"
 brew "tmux"
 brew "tmux-mem-cpu-load"
 brew "httpie"
@@ -40,6 +42,7 @@ brew "the_silver_searcher" # ag, grep for code
 cask_args appdir: "/Applications"
 # Cask / GUI
 cask "docker"
+cask "dozer" # Hide menu bar icons on macS
 cask "google-cloud-sdk"
 cask "spectacle"
 cask "iterm2"
@@ -50,3 +53,6 @@ cask "brave-browser"
 cask "iina" # The modern media player for macOS
 cask "itsycal" # Itsycal is a tiny menu bar calendar.
 cask "the-unarchiver"
+
+# Mas
+mas "Xcode", id: 497799835

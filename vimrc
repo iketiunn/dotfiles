@@ -66,7 +66,9 @@ Plug 'junegunn/fzf.vim'
 
 " Multiple languages hightlight supports
 Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-markdown'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+  let g:vim_markdown_folding_disabled = 1
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'pangloss/vim-javascript'
   let g:javascript_plugin_jsdoc = 1
@@ -78,16 +80,32 @@ Plug 'airblade/vim-gitgutter'
 
 " Syntax checker
 Plug 'w0rp/ale'
+  let g:ale_sign_error = '✗'
+  let g:ale_sign_warning = '⚡'
   let g:ale_fixers = {
     \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-    \   'javascript': ['eslint'],
+    \   'javascript': ['prettier_standard'],
+    \   'reason': ['refmt'],
+    \   'css': ['prettier_standard'],
     \}
+  let g:ale_linters = {
+    \ 'javascript': [''],
+    \ 'reasonml': ['ols'],
+    \  'dockerfile': ['dockerfile_lint'],
+    \}
+  "let g:ale_linters_explicit = 1
   let g:ale_fix_on_save = 1
   " Enable completion where available.
   " This setting must be set before ALE is loaded.
   let g:ale_completion_enabled = 1
 call plug#end()
 
+set showcmd
+" Spell checking
+  set nospell
+  " Toggle spelling
+  nnoremap <slient> <leader>s :set spell!<cr>
+  set complete+=kspell " Turning on word completion
 " Basic setting
 colorscheme xoria256
 syntax on
@@ -99,16 +117,18 @@ set guioptions-=r " Removes right hand scroll bar
 set go-=L " Removes left hand scroll bar
 set linespace=15
 set nowrap                      " don't wrap lines
-" Set default tab behavior
-set tabstop=2                   " a tab is four spaces
-set softtabstop=2               " when hitting <BS>, pretend like a tab is removed, even if spaces
-set shiftwidth=2                " number of spaces to use for autoindenting
-set expandtab                   " expand tabs by default (overloadable per file type later)
 set tags=tags
+" Set default tab behavior
+  " Indent
+  set tabstop=2                   " a tab is four spaces
+  set softtabstop=2               " when hitting <BS>, pretend like a tab is removed, even if spaces
+  set shiftwidth=2                " number of spaces to use for autoindenting
+  set expandtab                   " expand tabs by default (overloadable per file type later)
+  set autoindent                  " always set autoindenting on
+  set smartindent
+  set copyindent                  " copy the previous indentation on autoindenting
 set shiftround                  " use multiple of shiftwidth when indenting with '<' and '>'
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
-set autoindent                  " always set autoindenting on
-set copyindent                  " copy the previous indentation on autoindenting
 set number                      " always show line numbers
 set ignorecase                  " ignore case when searching
 set smartcase                   " ignore case if search pattern is all lowercase,
