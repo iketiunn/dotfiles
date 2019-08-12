@@ -17,6 +17,22 @@
   fpath=(/usr/local/share/zsh-completions $fpath)
   . /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   . /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+  . /usr/local/etc/profile.d/z.sh
+    unalias z
+    z() {
+      if [[ -z "$*" ]]; then
+        cd "$(_z -l 2>&1 | fzf +s --tac | sed 's/^[0-9,.]* *//')"
+      else
+        _last_z_args="$@"
+        _z "$@"
+      fi
+    }
+
+    zz() {
+      cd "$(_z -l 2>&1 | sed 's/^[0-9,.]* *//' | fzf -q "$_last_z_args")"
+    }
+    alias j=z
+    alias jj=zz
   # FZF
   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
   export FZF_DEFAULT_COMMAND='fd --type f' # Respecting .gitignore

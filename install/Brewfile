@@ -6,10 +6,11 @@ tap "homebrew/cask-fonts"
 brew "mas"
 
 # General dev
+# Dep libs
 brew "cmake"
 brew "cocoapods" # For iOS dev
-brew "libpng"
-brew "ragel"
+brew "libpng" # Lib for processing PNG files
+brew "ragel" # Lib for text parsing and input validation
 brew "git"
 brew "asdf"
   # Deps for asdf nodejs
@@ -18,16 +19,16 @@ brew "asdf"
   brew "gpg"
 
 # Cli thing
-brew "bash"
-brew "bash-completion"
 brew "bat" # Better cat
-brew "coreutils"
+brew "wget"
+# zsh
 brew "zsh"
-brew "zsh-syntax-highlighting"
-brew "zsh-history-substring-search"
-brew "zsh-completions"
-brew "zsh-autosuggestions"
-brew "shellcheck"
+  brew "z"
+  brew "zsh-syntax-highlighting"
+  brew "zsh-history-substring-search"
+  brew "zsh-completions"
+  brew "zsh-autosuggestions"
+brew "shellcheck" # Shell linter
 brew "tree"
 brew "tmux"
 brew "tmux-mem-cpu-load"
@@ -37,6 +38,7 @@ brew "jq"
 brew "fd"
 brew "fzf"
 brew "the_silver_searcher" # ag, grep for code
+brew "watchman" # For react-native
 
 # Directory to install
 cask_args appdir: "/Applications"
@@ -46,13 +48,16 @@ cask "dozer" # Hide menu bar icons on macS
 cask "google-cloud-sdk"
 cask "spectacle"
 cask "iterm2"
-cask "alacritty"
 cask "visual-studio-code"
 cask "tableplus" # Tool for Relational Database
 cask "brave-browser"
 cask "iina" # The modern media player for macOS
 cask "itsycal" # Itsycal is a tiny menu bar calendar.
 cask "the-unarchiver"
+cask "google-backup-and-sync"
+cask "typora" # Markdown editor
+cask "android-platform-tools"
+cask "pock" # Touch Bar widget
 
 # Mas
 mas "Xcode", id: 497799835
