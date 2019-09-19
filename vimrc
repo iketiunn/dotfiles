@@ -33,6 +33,7 @@ Plug 'itchyny/lightline.vim'
     " Somehow it's not working, disable now
     "let g:lightline.active = { 'right': [[ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ]] }
 " Utils
+Plug 'liuchengxu/vim-which-key'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
   map <C-n> :NERDTreeToggle<CR>
@@ -56,19 +57,20 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
   " Will print a error..
   "autocmd StdinReadPre * let s:std_in=1
   "autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
 " Fzf
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
   let g:fzf_layout = { 'down': '~20%' }
   nnoremap <silent> <C-P> :Files <cr>
   "nmap <leader>p <C-P><cr>
-
 " Multiple languages hightlight supports
 Plug 'sheerun/vim-polyglot'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
   let g:vim_markdown_folding_disabled = 1
+  let g:vim_markdown_new_list_item_indent = 0
+  setlocal formatoptions=tqlnrc
+  set comments=b:>
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'pangloss/vim-javascript'
   let g:javascript_plugin_jsdoc = 1
@@ -98,6 +100,7 @@ Plug 'w0rp/ale'
   " Enable completion where available.
   " This setting must be set before ALE is loaded.
   let g:ale_completion_enabled = 1
+  set omnifunc=ale#completion#OmniFunc
 call plug#end()
 
 set showcmd
@@ -143,8 +146,10 @@ set backupdir=~/.vim/backup
 set directory=~/.vim/swap
 
 " Key mapping
-let mapleader = " "
-let g:mapleader = " "
+let mapleader = "\<Space>"
+let g:mapleader = "\<Space>"
+nnoremap <silent> <leader> :WhichKey "<Space>"<CR>
+set timeoutlen=500
 " Fast saves
 nmap <leader>w :w!<cr>
 " Fast quit
@@ -168,35 +173,6 @@ nmap <leader>[ :bp<cr>
 
 " Disable auto comment on next line
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-" ## added by OPAM user-setup for vim / base ## 93ee63e278bdfc07d1139a748ed3fff2 ## you can edit, but keep this line
-let s:opam_share_dir = system("opam config var share")
-let s:opam_share_dir = substitute(s:opam_share_dir, '[\r\n]*$', '', '')
 
-let s:opam_configuration = {}
-
-function! OpamConfOcpIndent()
-  execute "set rtp^=" . s:opam_share_dir . "/ocp-indent/vim"
-endfunction
-let s:opam_configuration['ocp-indent'] = function('OpamConfOcpIndent')
-
-function! OpamConfOcpIndex()
-  execute "set rtp+=" . s:opam_share_dir . "/ocp-index/vim"
-endfunction
-let s:opam_configuration['ocp-index'] = function('OpamConfOcpIndex')
-
-function! OpamConfMerlin()
-  let l:dir = s:opam_share_dir . "/merlin/vim"
-  execute "set rtp+=" . l:dir
-endfunction
-let s:opam_configuration['merlin'] = function('OpamConfMerlin')
-
-let s:opam_packages = ["ocp-indent", "ocp-index", "merlin"]
-let s:opam_check_cmdline = ["opam list --installed --short --safe --color=never"] + s:opam_packages
-let s:opam_available_tools = split(system(join(s:opam_check_cmdline)))
-for tool in s:opam_packages
-  " Respect package order (merlin should be after ocp-index)
-  if count(s:opam_available_tools, tool) > 0
-    call s:opam_configuration[tool]()
-  endif
-endfor
-" ## end of OPAM user-setup addition for vim / base ## keep this line
+" Fix Markdown indent
+setlocal indentexpr=

@@ -12,11 +12,15 @@ brew "cocoapods" # For iOS dev
 brew "libpng" # Lib for processing PNG files
 brew "ragel" # Lib for text parsing and input validation
 brew "git"
+brew "imagemagick" # For image processing
 brew "asdf"
   # Deps for asdf nodejs
   # Read more to setup: https://github.com/asdf-vm/asdf-nodejs
   brew "coreutils"
   brew "gpg"
+  # For Erlang/Elixir
+  brew "autoconf" # Build tool
+  brew "wxmac" # Observer/Debugger
 
 # Cli thing
 brew "bat" # Better cat
@@ -43,10 +47,11 @@ brew "watchman" # For react-native
 # Directory to install
 cask_args appdir: "/Applications"
 # Cask / GUI
+cask "caffeine" # Kepp Mac awake
 cask "docker"
 cask "dozer" # Hide menu bar icons on macS
 cask "google-cloud-sdk"
-cask "spectacle"
+cask "spectacle" # For tilling window
 cask "iterm2"
 cask "visual-studio-code"
 cask "tableplus" # Tool for Relational Database
@@ -56,8 +61,8 @@ cask "itsycal" # Itsycal is a tiny menu bar calendar.
 cask "the-unarchiver"
 cask "google-backup-and-sync"
 cask "typora" # Markdown editor
-cask "android-platform-tools"
 cask "pock" # Touch Bar widget
+cask "android-studio" # Android dev envirment
 
 # Mas
 mas "Xcode", id: 497799835

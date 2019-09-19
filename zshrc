@@ -12,7 +12,6 @@
   zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' # Case-insensitive matching
 # Style
   [[ $TMUX = "" ]] && export TERM="xterm-256color"
-
 # zsh plugins
   fpath=(/usr/local/share/zsh-completions $fpath)
   . /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -34,8 +33,26 @@
     alias j=z
     alias jj=zz
   # FZF
-  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-  export FZF_DEFAULT_COMMAND='fd --type f' # Respecting .gitignore
+    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+    export FZF_DEFAULT_COMMAND='fd --type f' # Respecting .gitignore
+    # Default color schema: Seoul256 Dusk
+    export FZF_DEFAULT_OPTS='
+      --color fg:242,bg:233,hl:65,fg+:15,bg+:234,hl+:108
+      --color info:108,prompt:109,spinner:108,pointer:168,marker:168
+    '
+    # Fuzzy grep open via ag with line number
+    vg() {
+      local file
+      local line
+
+      read -r file line <<<"$(ag --nobreak --noheading $@ | fzf -0 -1 | awk -F: '{print $1, $2}')"
+
+      if [[ -n $file ]]
+      then
+        vim $file +$line
+      fi
+    }
+
 
 # asdf: version manager
   . /usr/local/opt/asdf/asdf.sh
@@ -73,15 +90,11 @@
   #fi
 
 # Prompt
-  #function preexec() {
-  #  timer=${timer:-$SECONDS}
-  #}
-  #function precmd() {
-  #  if [ $timer ]; then
-  #    timer_show=$(($SECONDS - $timer))
-  #    timer_show=$(printf '%.*f\n' 3 $timer_show)
-  #    export RPROMPT="[%F{$hcolor}%?%F{$dcolor}] : %F{$hcolor}${timer_show}s %F{$dcolor}"
-  #    unset timer
-  #  fi
-  #}
   export PROMPT="%1~ λ " # Show only current dir, tmx shows last 2
+
+# Android env
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
