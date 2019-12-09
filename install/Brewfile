@@ -1,4 +1,5 @@
 # Deps for install
+tap "rs/tap"
 tap "homebrew/bundle"
 tap "homebrew/core"
 tap "homebrew/cask-fonts"
@@ -36,7 +37,7 @@ brew "shellcheck" # Shell linter
 brew "tree"
 brew "tmux"
 brew "tmux-mem-cpu-load"
-brew "httpie"
+brew "curlie"
 brew "tldr"
 brew "jq"
 brew "fd"
