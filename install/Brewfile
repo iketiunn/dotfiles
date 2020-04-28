@@ -1,9 +1,10 @@
 # Deps for install
 tap "rs/tap"
+tap "heroku/brew"
 tap "homebrew/bundle"
 tap "homebrew/core"
 tap "homebrew/cask-fonts"
-  cask "font-source-code-pro-for-powerline"
+  cask "font-jetbrains-mono"
 brew "mas"
 
 # General dev
@@ -22,8 +23,10 @@ brew "asdf"
   # For Erlang/Elixir
   brew "autoconf" # Build tool
   brew "wxmac" # Observer/Debugger
+brew "heroku"
 
 # Cli thing
+brew "neovim"
 brew "bat" # Better cat
 brew "wget"
 # zsh
@@ -44,7 +47,7 @@ brew "fd"
 brew "fzf"
 brew "the_silver_searcher" # ag, grep for code
 brew "watchman" # For react-native
-
+brew "libpq", link: true # For psql without whole database
 # Directory to install
 cask_args appdir: "/Applications"
 # Cask / GUI

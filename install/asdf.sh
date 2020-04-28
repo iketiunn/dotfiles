@@ -4,10 +4,6 @@
 asdf plugin-add nodejs
   asdf install nodejs 10.15.0
   asdf global nodejs 10.15.0
-# Rust
-asdf plugin-add rust 
-  asdf install rust nightly
-  asdf global rust nightly
 # Elixir
 asdf plugin-add elixir
   asdf install elixir 1.9.0-otp-22
