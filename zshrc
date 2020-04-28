@@ -6,6 +6,11 @@
   setopt HIST_IGNORE_DUPS
   setopt EXTENDED_HISTORY
 # Setup compelation
+  # Make Homebrew’s completions available in zsh
+  # Must get the Homebrew-managed zsh site-functions on your FPATH before initialising zsh’s completion facility
+  if type brew &>/dev/null; then
+    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+  fi
   autoload -Uz compinit && compinit
   zstyle ':completion:*' menu select # Arrow-key driven interface
   setopt COMPLETE_ALIASES
@@ -41,7 +46,7 @@
       --color info:108,prompt:109,spinner:108,pointer:168,marker:168
     '
     # Fuzzy grep open via ag with line number
-    vg() {
+    av() {
       local file
       local line
 
@@ -60,6 +65,9 @@
   # (see https://github.com/asdf-vm/asdf-nodejs/issues/46)
   # Reshim after installing all packages using `asdf reshim nodejs`
   export ASDF_SKIP_RESHIM=1
+
+# neovim
+alias vim=nvim
 
 # Alias
   # Basic
