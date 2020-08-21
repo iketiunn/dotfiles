@@ -43,7 +43,9 @@ Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
   function! ToggleNERDTree()
-    if @% == ""
+    if g:NERDTree.IsOpen()
+      NERDTreeToggle
+    elseif @% == ""
       NERDTreeToggle
     else
       NERDTreeFind
