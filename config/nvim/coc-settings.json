@@ -1,3 +1,4 @@
 {
-  "emmet.includeLanguages": {"eelixir": "html"}
+  "emmet.includeLanguages": {"eelixir": "html"},
+  "diagnostic.displayByAle": true
 }

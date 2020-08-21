@@ -40,9 +40,17 @@ Plug 'itchyny/lightline.vim'
     " Somehow it's not working, disable now
     let g:lightline.active = { 'right': [[ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ]] }
 " Utils
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-  map <C-n> :NERDTreeToggle<CR>
+  function! ToggleNERDTree()
+    if @% == ""
+      NERDTreeToggle
+    else
+      NERDTreeFind
+    endif
+  endfun
+  map <C-n> :call ToggleNERDTree()<CR>
+  " Setup icons
   let g:NERDTreeNodeDelimiter = "\u00a0" " Fix ^G
   let NERDTreeShowLineNumbers=1
   let NERDTreeAutoCenter=1
@@ -59,14 +67,19 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
     \ "Clean"     : "✔︎",
     \ "Unknown"   : "?"
     \ }
+  " open a NERDTree automatically when vim starts up if no files were specified
+  autocmd StdinReadPre * let s:std_in=1
+  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " Fuzz search
 set rtp+=~/.vim/plugged/fzf
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-  let g:fzf_layout = { 'down': '~20%' }
+  let g:fzf_layout = { 'down': '~40%' }
   nnoremap <silent> <C-P> :Files <cr>
 " Multiple languages hightlight supports
-Plug 'sheerun/vim-polyglot', { 'tag': 'v4.2.1' }
+Plug 'sheerun/vim-polyglot', { 'tag': 'v4.4.3' }
+  " Prisma
+  Plug 'pantharshit00/vim-prisma'
   " Markdown
   Plug 'godlygeek/tabular'
   Plug 'plasticboy/vim-markdown'
@@ -249,29 +262,18 @@ set backupdir=~/.vim/backup
 set directory=~/.vim/swap
 
 " Key mapping
-let mapleader = ","
-let g:mapleader = ","
-" Fast saves
-nmap <leader>w :w!<cr>
-" Fast quit
-nmap <leader>q :q!<cr>
-" Fast page down
-nmap <leader>f <C-F><cr>
-" Fast page up
-nmap <leader>b <C-B><cr>
-
-" Easy escaping to normal model
-imap jk <esc><esc>:w<cr>
-" Fast add semicolon at end of line
-imap <leader>; <esc>A;<cr>
-
-" Auto change directory to match current file
-nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
-
-" Quickly go forward or backward to buffer
-nmap <leader>] :bn<cr>
-nmap <leader>[ :bp<cr>
-
+  let mapleader = ","
+  let g:mapleader = ","
+  nmap <leader>/ :noh<cr> " Clear highlight
+  nmap <leader>w :w!<cr> " Fast saves
+  nmap <leader>q :q!<cr> " Fast quit
+  nmap <leader>f <C-F><cr> " Fast page down
+  nmap <leader>b <C-B><cr> " Fast page up
+  imap jk <esc><esc>:w<cr> " Easy escaping to normal model
+  imap <leader>; <esc>A;<cr> " Fast add semicolon at end of line
+  nnoremap ,cd :cd %:p:h<CR>:pwd<CR> " Auto change directory to match current file
+  nmap <leader>] :bn<cr> " Quickly go forward to buffer
+  nmap <leader>[ :bp<cr> " Quickly go backward to buffer
 " Disable auto comment on next line
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
