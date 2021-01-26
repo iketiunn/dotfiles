@@ -23,7 +23,6 @@ brew "asdf"
   # For Erlang/Elixir
   brew "autoconf" # Build tool
   brew "wxmac" # Observer/Debugger
-brew "heroku"
 
 # Cli thing
 brew "neovim"
@@ -48,6 +47,9 @@ brew "fzf"
 brew "the_silver_searcher" # ag, grep for code
 brew "watchman" # For react-native
 brew "libpq", link: true # For psql without whole database
+brew "nmap"
+brew "minikube"
+
 # Directory to install
 cask_args appdir: "/Applications"
 # Cask / GUI
