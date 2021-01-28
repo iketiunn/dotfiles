@@ -65,6 +65,8 @@
   # (see https://github.com/asdf-vm/asdf-nodejs/issues/46)
   # Reshim after installing all packages using `asdf reshim nodejs`
   export ASDF_SKIP_RESHIM=1
+# haxe, temp added
+  export HAXE_STD_PATH="/usr/local/lib/haxe/std"
 
 # neovim
 alias vim=nvim

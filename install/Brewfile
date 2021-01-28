@@ -68,7 +68,7 @@ cask "the-unarchiver"
 cask "google-backup-and-sync"
 cask "typora" # Markdown editor
 cask "pock" # Touch Bar widget
-cask "android-studio" # Android dev envirment
+#cask "android-studio" # Android dev envirment
 
 # Mas
-mas "Xcode", id: 497799835
+#mas "Xcode", id: 497799835

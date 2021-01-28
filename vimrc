@@ -58,7 +58,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
   let NERDTreeAutoCenter=1
   let NERDTreeShowHidden=1
   let NERDTreeIgnore=['\~$','\.swp']
-  let g:NERDTreeIndicatorMapCustom = {
+  let g:NERDTreeGitStatusIndicatorMapCustom = {
     \ "Modified"  : "✹",
     \ "Staged"    : "✚",
     \ "Untracked" : "✭",
