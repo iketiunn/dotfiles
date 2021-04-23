@@ -1,4 +1,12 @@
 {
   "emmet.includeLanguages": {"eelixir": "html"},
-  "diagnostic.displayByAle": true
+  "diagnostic.displayByAle": true,
+  "languageserver": {
+    "bash": {
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh"],
+      "ignoredRootPaths": ["~"]
+    }
+  }
 }

@@ -128,7 +128,7 @@ Plug 'w0rp/ale'
 " coc - Auto compelete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
   let g:coc_global_extensions = [
-    \  'coc-elixir',
+    \  'coc-elixir', 'coc-haxe', 'coc-sh',
     \  'coc-tslint-plugin', 'coc-tsserver',
     \  'coc-emmet', 'coc-css', 'coc-html',
     \  'coc-json', 'coc-yank', 'coc-prettier'

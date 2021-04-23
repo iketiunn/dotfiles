@@ -48,7 +48,11 @@ brew "the_silver_searcher" # ag, grep for code
 brew "watchman" # For react-native
 brew "libpq", link: true # For psql without whole database
 brew "nmap"
+brew "wrk"
+brew "iproute2mac"
 brew "minikube"
+brew "pulumi"
+brew "helm"
 
 # Directory to install
 cask_args appdir: "/Applications"
@@ -67,7 +71,6 @@ cask "itsycal" # Itsycal is a tiny menu bar calendar.
 cask "the-unarchiver"
 cask "google-backup-and-sync"
 cask "typora" # Markdown editor
-cask "pock" # Touch Bar widget
 #cask "android-studio" # Android dev envirment
 
 # Mas
