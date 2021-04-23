@@ -1,13 +1,21 @@
-dotfiles λ tree
+```
+λ tree .
 .
-├── Brewfile
 ├── README.md
-├── asdf.sh
-├── install.sh # install brew bundle and link dotfiles
-├── link.sh
-├── post-install.sh # Tweak mac settings
+├── config
+│   └── nvim
+│       ├── coc-settings.json
+│       └── init.vim
+├── install
+│   ├── Brewfile
+│   ├── Brewfile.lock.json
+│   ├── asdf.sh
+│   ├── install.sh
+│   └── post-install.sh
+├── install.sh
 ├── tmux.conf
 ├── vimrc
 └── zshrc
 
-0 directories, 9 files
+3 directories, 12 files
+```
