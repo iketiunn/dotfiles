@@ -14,6 +14,7 @@ brew "cocoapods" # For iOS dev
 brew "libpng" # Lib for processing PNG files
 brew "ragel" # Lib for text parsing and input validation
 brew "git"
+brew "git-delta" # https://github.com/dandavison/delta
 brew "imagemagick" # For image processing
 brew "asdf"
   # Deps for asdf nodejs
