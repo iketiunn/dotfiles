@@ -10,22 +10,9 @@ brew "mas"
 # General dev
 # Dep libs
 brew "cmake"
-brew "cocoapods" # For iOS dev
-brew "libpng" # Lib for processing PNG files
-brew "ragel" # Lib for text parsing and input validation
+# Cli thing
 brew "git"
 brew "git-delta" # https://github.com/dandavison/delta
-brew "imagemagick" # For image processing
-brew "asdf"
-  # Deps for asdf nodejs
-  # Read more to setup: https://github.com/asdf-vm/asdf-nodejs
-  brew "coreutils"
-  brew "gpg"
-  # For Erlang/Elixir
-  brew "autoconf" # Build tool
-  brew "wxmac" # Observer/Debugger
-
-# Cli thing
 brew "neovim"
 brew "bat" # Better cat
 brew "wget"
@@ -36,7 +23,6 @@ brew "zsh"
   brew "zsh-history-substring-search"
   brew "zsh-completions"
   brew "zsh-autosuggestions"
-brew "shellcheck" # Shell linter
 brew "tree"
 brew "tmux"
 brew "tmux-mem-cpu-load"
@@ -51,28 +37,21 @@ brew "libpq", link: true # For psql without whole database
 brew "nmap"
 brew "wrk"
 brew "iproute2mac"
-brew "minikube"
-brew "pulumi"
-brew "helm"
 
 # Directory to install
 cask_args appdir: "/Applications"
 # Cask / GUI
-cask "caffeine" # Kepp Mac awake
 cask "docker"
 cask "dozer" # Hide menu bar icons on macS
-cask "google-cloud-sdk"
 cask "spectacle" # For tilling window
 cask "iterm2"
 cask "visual-studio-code"
-cask "tableplus" # Tool for Relational Database
 cask "brave-browser"
 cask "iina" # The modern media player for macOS
 cask "itsycal" # Itsycal is a tiny menu bar calendar.
 cask "the-unarchiver"
 cask "google-backup-and-sync"
 cask "typora" # Markdown editor
-#cask "android-studio" # Android dev envirment
 
 # Mas
 #mas "Xcode", id: 497799835
