@@ -1,8 +1,8 @@
 # Deps for install
-tap "rs/tap"
-tap "heroku/brew"
+tap "rs/tap" # curlie
 tap "homebrew/bundle"
 tap "homebrew/core"
+tap "homebrew/cask"
 tap "homebrew/cask-fonts"
   cask "font-jetbrains-mono"
 brew "mas"
@@ -10,6 +10,8 @@ brew "mas"
 # General dev
 # Dep libs
 brew "cmake"
+# Lang
+brew "elixir"
 # Cli thing
 brew "git"
 brew "git-delta" # https://github.com/dandavison/delta
