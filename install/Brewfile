@@ -18,20 +18,13 @@ brew "git-delta" # https://github.com/dandavison/delta
 brew "neovim"
 brew "bat" # Better cat
 brew "wget"
-# zsh
-brew "zsh"
-  brew "z"
-  brew "zsh-syntax-highlighting"
-  brew "zsh-history-substring-search"
-  brew "zsh-completions"
-  brew "zsh-autosuggestions"
 brew "tree"
 brew "tmux"
 brew "tmux-mem-cpu-load"
-brew "curlie"
+brew "curlie" # httpie golang export, better curl
 brew "tldr"
 brew "jq"
-brew "fd"
+brew "fd" # Better find
 brew "fzf"
 brew "the_silver_searcher" # ag, grep for code
 brew "watchman" # For react-native
@@ -39,6 +32,16 @@ brew "libpq", link: true # For psql without whole database
 brew "nmap"
 brew "wrk"
 brew "iproute2mac"
+# devops
+# brew minikube
+brew k3d
+# zsh
+brew "zsh"
+  brew "z"
+  brew "zsh-syntax-highlighting"
+  brew "zsh-history-substring-search"
+  brew "zsh-completions"
+  brew "zsh-autosuggestions"
 
 # Directory to install
 cask_args appdir: "/Applications"

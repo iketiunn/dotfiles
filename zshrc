@@ -58,15 +58,8 @@
       fi
     }
 
-
-# asdf: version manager
-  . /usr/local/opt/asdf/asdf.sh
-  # Avoid a slowdown when installing large packages
-  # (see https://github.com/asdf-vm/asdf-nodejs/issues/46)
-  # Reshim after installing all packages using `asdf reshim nodejs`
-  export ASDF_SKIP_RESHIM=1
 # haxe, temp added
-  export HAXE_STD_PATH="/usr/local/lib/haxe/std"
+export HAXE_STD_PATH="/usr/local/lib/haxe/std"
 
 # neovim
 alias vim=nvim
@@ -101,6 +94,12 @@ alias vim=nvim
 
 # Prompt
   export PROMPT="%1~ λ " # Show only current dir, tmx shows last 2
+  export RPROMPT="%T"
+  # Make right prompt time reset every 10 seconds
+  TMOUT=10
+  TRAPALRM() {
+      zle reset-prompt
+  }
 
 # Android env
 export ANDROID_HOME=$HOME/Library/Android/sdk
