@@ -1,5 +1,4 @@
 minikube delete --all && \
-minikube start --cpus 4 --memory 16384 && \
+minikube start --vm-driver=hyperkit --cpus=4 --memory=16384 --disk-size=50G && \
 minikube addons enable ingress && \
-kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission # bug from ...
-
+minikube ssh docker pull bitnami/keycloak:12.0.4-debian-10-r52 # incase your network sucks
