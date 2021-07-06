@@ -1,11 +1,14 @@
 # JAVA
   # For the system Java wrappers to find this JDK, symlink it with
   #   sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
-export JAVA_11_HOME=$(/usr/libexec/java_home -v11)
+export JAVA_11_HOME=/usr/local/Cellar/openjdk@11/11.0.10/libexec/openjdk.jdk/Contents/Home
 
-# Android env
+# Android env with Android Studio
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+# nix
+if [ -e /Users/ike/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/ike/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

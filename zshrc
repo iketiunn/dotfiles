@@ -101,4 +101,4 @@ alias vim=nvim
       zle reset-prompt
   }
 
-source ./zsh-path
+source ~/.zsh-path

@@ -5,14 +5,15 @@ tap "homebrew/core"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
   cask "font-jetbrains-mono"
+tap "adoptopenjdk/openjdk"  # for react-native
 brew "mas"
 
 # General dev
 # Dep libs
 brew "cmake"
 # Lang
+brew "node"
 brew "elixir"
-brew "java11"
 # Cli thing
 brew "git"
 brew "git-delta" # https://github.com/dandavison/delta
@@ -59,6 +60,7 @@ cask "itsycal" # Itsycal is a tiny menu bar calendar.
 cask "the-unarchiver"
 cask "google-backup-and-sync"
 cask "typora" # Markdown editor
+cask "adoptopenjdk8" # for react-native
 
 # Mas
 #mas "Xcode", id: 497799835
