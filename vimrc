@@ -93,7 +93,7 @@ Plug 'sheerun/vim-polyglot', { 'tag': 'v4.4.3' }
     setlocal indentexpr=
 
 " Git support
-Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive' " :G [option] for git commands
 Plug 'airblade/vim-gitgutter'
 
 
@@ -239,6 +239,7 @@ set go-=L " Removes left hand scroll bar
 set linespace=15
 set nowrap                      " don't wrap lines
 set tags=tags
+set showtabline=2 " Always shows tabline
 " Set default tab behavior
   " Indent
   set tabstop=2                   " a tab is four spaces

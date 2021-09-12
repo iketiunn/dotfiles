@@ -43,6 +43,7 @@ brew "zsh"
   brew "zsh-completions"
   brew "zsh-autosuggestions"
 # Cloud dev
+brew "devspace"
 brew "pulumi"
 brew "awscli"
 
