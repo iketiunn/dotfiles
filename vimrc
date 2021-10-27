@@ -16,6 +16,9 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+" Pre setup vars
+let g:ale_disable_lsp = 1 " Disable ale lsp in favor of coc
+
 " Theme/Status bar
 Plug 'flazz/vim-colorschemes'
 Plug 'marcopaganini/termschool-vim-theme'
