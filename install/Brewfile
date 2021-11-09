@@ -43,14 +43,18 @@ brew "zsh"
   brew "zsh-completions"
   brew "zsh-autosuggestions"
 # Cloud dev
-brew "devspace"
 brew "pulumi"
 brew "awscli"
+brew "devspace"
+  # Replace Docker Desktop
+  brew "docker" # Docker cli
+  brew "hyperkit"
+  brew "kubectl"
+  brew "minibuke"
 
 # Directory to install
 cask_args appdir: "/Applications"
 # Cask / GUI
-cask "docker"
 cask "dozer" # Hide menu bar icons on macS
 cask "spectacle" # For tilling window
 cask "iterm2"
@@ -59,8 +63,6 @@ cask "brave-browser"
 cask "iina" # The modern media player for macOS
 cask "itsycal" # Itsycal is a tiny menu bar calendar.
 cask "the-unarchiver"
-cask "google-backup-and-sync"
-cask "typora" # Markdown editor
 cask "adoptopenjdk8" # for react-native
 
 # Mas
