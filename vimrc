@@ -256,7 +256,7 @@ set showtabline=2 " Always shows tabline
   set copyindent                  " copy the previous indentation on autoindenting
 set shiftround                  " use multiple of shiftwidth when indenting with '<' and '>'
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
-set number                      " always show line numbers
+set number relativenumber       " always show hybrid line numbers
 set ignorecase                  " ignore case when searching
 set smartcase                   " ignore case if search pattern is all lowercase,
 set timeout timeoutlen=200 ttimeoutlen=100

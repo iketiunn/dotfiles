@@ -101,4 +101,23 @@ alias vim=nvim
       zle reset-prompt
   }
 
+# Functions
+port-tcp() {
+  (
+    echo 'PROC PID USER x IPV x x PROTO BIND PORT'
+    (
+      lsof +c 15 -iTCP -sTCP:LISTEN -P -n | tail -n +2
+    ) | sed -E 's/ ([^ ]+):/ \1 /' | sort -k8,8 -k5,5 -k1,1 -k10,10n
+  ) | awk '{ printf "%-16s %-6s %-9s %-5s %-7s %s:%s\n",$1,$2,$3,$5,$8,$9,$10 }'
+}
+
+port-udp() {
+  (
+    echo 'PROC PID USER x IPV x x PROTO BIND PORT'
+    (
+      lsof +c 15 -iUDP -P -n | tail -n +2 | egrep -v ' (127\.0\.0\.1|\[::1\]):'
+    ) | sed -E 's/ ([^ ]+):/ \1 /' | sort -k8,8 -k5,5 -k1,1 -k10,10n
+  ) | awk '{ printf "%-16s %-6s %-9s %-5s %-7s %s:%s\n",$1,$2,$3,$5,$8,$9,$10 }'
+}
+
 source ~/.zsh-path

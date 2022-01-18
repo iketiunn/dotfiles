@@ -1,4 +1,9 @@
 minikube delete --all && \
-minikube start --driver=hyperkit --container-runtime=docker --cpus=6 --memory=12G --disk-size=100G && \
+minikube start --driver=hyperkit --container-runtime=docker --cpus=6 --memory=24G --disk-size=120G && \
 minikube addons enable ingress
-minikube ssh docker pull bitnami/keycloak:12.0.4-debian-10-r52 # incase your network sucks
+
+minikube ssh "sudo sysctl fs.inotify.max_user_watches=1048576"
+
+# For mac
+echo "Going to increase inotify limit on MacOS..."
+sudo sysctl -w kern.maxfiles=524288
