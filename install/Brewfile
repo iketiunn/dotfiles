@@ -23,7 +23,6 @@ brew "bat" # Better cat
 brew "wget"
 brew "tree"
 brew "tmux"
-brew "tmux-mem-cpu-load"
 brew "curlie" # httpie golang export, better curl
 brew "tldr"
 brew "jq"
