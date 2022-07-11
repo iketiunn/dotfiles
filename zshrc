@@ -92,6 +92,11 @@ alias vim=nvim
   #  pgrep tmux && tmux
   #fi
 
+if command -v minikube &> /dev/null
+then
+  eval $(minikube docker-env)
+fi
+
 # Prompt
   export PROMPT="%1~ λ " # Show only current dir, tmx shows last 2
   export RPROMPT="%T"
