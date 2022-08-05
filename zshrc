@@ -58,9 +58,6 @@
       fi
     }
 
-# haxe, temp added
-export HAXE_STD_PATH="/usr/local/lib/haxe/std"
-
 # neovim
 alias vim=nvim
 
@@ -91,11 +88,6 @@ alias vim=nvim
   #if [[ -z $TMUX ]]; then
   #  pgrep tmux && tmux
   #fi
-
-if command -v minikube &> /dev/null
-then
-  eval $(minikube docker-env)
-fi
 
 # Prompt
   export PROMPT="%1~ λ " # Show only current dir, tmx shows last 2

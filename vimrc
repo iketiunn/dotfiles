@@ -1,3 +1,9 @@
+" TODO: upgrade vimrc
+" https://github.com/iamcco/markdown-preview.nvim
+" packer
+" mason lsp
+" vale
+
 set nocompatible
 " Check Vundle is installed or not
 filetype plugin on
@@ -233,7 +239,7 @@ set showcmd
   " Theme
   set termguicolors
   set background=dark
-  colorscheme janah
+  colorscheme spring-night
   " ColorScheme change ( janah )
 syntax on
 set signcolumn=yes " Keep signcolumn alway on
