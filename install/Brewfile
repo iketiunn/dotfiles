@@ -4,7 +4,7 @@ tap "homebrew/bundle"
 tap "homebrew/core"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
-  cask "font-jetbrains-mono"
+  cask "font-jetbrains-mono-nerd-font"
 tap "adoptopenjdk/openjdk"  # for react-native
 brew "mas"
 

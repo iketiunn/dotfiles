@@ -1,9 +1,3 @@
-" TODO: upgrade vimrc
-" https://github.com/iamcco/markdown-preview.nvim
-" packer
-" mason lsp
-" vale
-
 set nocompatible
 " Check Vundle is installed or not
 filetype plugin on
@@ -28,219 +22,163 @@ let g:ale_disable_lsp = 1 " Disable ale lsp in favor of coc
 " Theme/Status bar
 Plug 'flazz/vim-colorschemes'
 Plug 'marcopaganini/termschool-vim-theme'
-Plug 'itchyny/lightline.vim'
-  set laststatus=2
-  set noshowmode
-  Plug 'maximbaz/lightline-ale'
-    let g:lightline = {}
-    let g:lightline.colorscheme = 'wombat'
-    let g:lightline.component_expand = {
-      \  'linter_checking': 'lightline#ale#checking',
-      \  'linter_warnings': 'lightline#ale#warnings',
-      \  'linter_errors': 'lightline#ale#errors',
-      \  'linter_ok': 'lightline#ale#ok',
-      \ }
-    let g:lightline.component_type = {
-      \     'linter_checking': 'left',
-      \     'linter_warnings': 'warning',
-      \     'linter_errors': 'error',
-      \     'linter_ok': 'left',
-      \ }
-    " Somehow it's not working, disable now
-    let g:lightline.active = { 'right': [[ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ]] }
-" Utils
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-  function! ToggleNERDTree()
-    if g:NERDTree.IsOpen()
-      NERDTreeToggle
-    elseif @% == ""
-      NERDTreeToggle
-    else
-      NERDTreeFind
-    endif
-  endfun
-  map <C-n> :call ToggleNERDTree()<CR>
-  " Setup icons
-  let g:NERDTreeNodeDelimiter = "\u00a0" " Fix ^G
-  let NERDTreeShowLineNumbers=1
-  let NERDTreeAutoCenter=1
-  let NERDTreeShowHidden=1
-  let NERDTreeIgnore=['\~$','\.swp']
-  let g:NERDTreeGitStatusIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ "Unknown"   : "?"
-    \ }
-  " open a NERDTree automatically when vim starts up if no files were specified
-  autocmd StdinReadPre * let s:std_in=1
-  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | wincmd p | endif
+Plug 'nvim-lualine/lualine.nvim'
+
+" File explorer
+Plug 'kyazdani42/nvim-tree.lua'
+
 " Fuzz search
 set rtp+=~/.vim/plugged/fzf
-Plug '/usr/local/opt/fzf'
+Plug '/usr/local/opt/fzf' " brew installed fzf
 Plug 'junegunn/fzf.vim'
   let g:fzf_layout = { 'down': '~40%' }
   nnoremap <silent> <C-P> :Files <cr>
 " Multiple languages hightlight supports
-Plug 'sheerun/vim-polyglot', { 'tag': 'v4.4.3' }
-  " Prisma
-  Plug 'pantharshit00/vim-prisma'
-  " Markdown
-  Plug 'godlygeek/tabular'
-  Plug 'plasticboy/vim-markdown'
-    let g:vim_markdown_folding_disabled = 1
-    let g:vim_markdown_new_list_item_indent = 0
-    setlocal formatoptions=tqlnrc
-    set comments=b:>
-    " Fix Markdown indent
-    setlocal indentexpr=
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
-" Git support
-Plug 'tpope/vim-fugitive' " :G [option] for git commands
-Plug 'airblade/vim-gitgutter'
+" GUI
+Plug 'kyazdani42/nvim-web-devicons' " you'll need font-jetbrains-mono-nerd-font or similar fonts
+Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 
+" Utils
+Plug 'windwp/nvim-autopairs'
+Plug 'windwp/nvim-ts-autotag'
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'folke/trouble.nvim'
+Plug 'nvim-lua/plenary.nvim' " Some plugin's deps
 
-" TODO Which key
-  " nnoremap <silent> <leader> :WhichKey "<Space>"<CR>
-  "set timeoutlen=500
-" Syntax checker
-Plug 'w0rp/ale'
-  " Setup elixir-ls with ale
-  Plug 'GrzegorzKozub/vim-elixirls', { 'do': ':ElixirLsCompileSync' }
-  let g:ale_elixir_elixir_ls_release = s:user_dir . '/plugins/vim-elixirls/elixir-ls/release'
-  " https://github.com/JakeBecker/elixir-ls/issues/54
-  let g:ale_elixir_elixir_ls_config = { 'elixirLS': { 'dialyzerEnabled': v:false } }
-  let g:ale_sign_error = '✖'
-  let g:ale_sign_warning = '✹'
-  let g:ale_fixers = {
-    \  '*': ['remove_trailing_lines', 'trim_whitespace'],
-    \  'elixir': ['mix_format'],
-    \  'javascript': ['prettier'],
-    \  'typescript': ['prettier'],
-    \  'css': ['prettier'],
-    \}
-  let g:ale_linters = {
-    \  'elixir': ['credo', 'elixir-ls'],
-    \  'javascript': [''],
-    \  'typescript': [''],
-    \  'dockerfile': ['dockerfile_lint'],
-    \}
-  let g:ale_linters_explicit = 1
-  let g:ale_lint_on_save = 1
-  let g:ale_fix_on_save = 1
-" coc - Auto compelete
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  let g:coc_global_extensions = [
-    \  'coc-elixir', 'coc-haxe', 'coc-sh',
-    \  'coc-tslint-plugin', 'coc-tsserver',
-    \  'coc-emmet', 'coc-css', 'coc-html',
-    \  'coc-json', 'coc-yank', 'coc-prettier'
-    \]
-  " if hidden is not set, TextEdit might fail.
-  set hidden
-  " Some servers have issues with backup files, see #649
-  set nobackup
-  set nowritebackup
-  " Better display for messages
-  set cmdheight=2
-  " You will have bad experience for diagnostic messages when it's default 4000.
-  set updatetime=300
-  " don't give |ins-completion-menu| messages.
-  set shortmess+=c
-  " Use tab for trigger completion with characters ahead and navigate.
-  " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-  inoremap <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ coc#refresh()
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-  function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
-  endfunction
-  " Use <c-space> to trigger completion.
-  inoremap <silent><expr> <C-SPACE> coc#refresh()
-  " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-  " Coc only does snippet and additional edit on confirm.
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-  " Or use `complete_info` if your vim support it, like:
-  " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-  " Remap keys for gotos
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
-  " Go back
-  nmap <silent> gb <C-O>
-  " Use K to show documentation in preview window
-  nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-  function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-      execute 'h '.expand('<cword>')
-    elseif (coc#rpc#ready())
-      call CocActionAsync('doHover')
-    else
-      execute '!' . &keywordprg . " " . expand('<cword>')
-    endif
-  endfunction
-  " Highlight symbol under cursor on CursorHold
-  autocmd CursorHold * silent call CocActionAsync('highlight')
-  " Remap for rename current word
-  nmap <leader>rn <Plug>(coc-rename)
-  " Remap for format selected region
-  xmap <leader>f  <Plug>(coc-format-selected)
-  augroup mygroup
-    autocmd!
-    " Setup formatexpr specified filetype(s).
-    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-    " Update signature help on jump placeholder
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-  augroup end
-  " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-  xmap <leader>a  <Plug>(coc-codeaction-selected)
-  nmap <leader>a  <Plug>(coc-codeaction-selected)
-  " Remap for do codeAction of current line
-  nmap <leader>ac  <Plug>(coc-codeaction)
-  " Fix autofix problem of current line
-  nmap <leader>qf  <Plug>(coc-fix-current)
-  " Create mappings for function text object, requires document symbols feature of languageserver.
-  xmap if <Plug>(coc-funcobj-i)
-  xmap af <Plug>(coc-funcobj-a)
-  omap if <Plug>(coc-funcobj-i)
-  omap af <Plug>(coc-funcobj-a)
-  " Use <C-d> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-  nmap <silent> <C-d> <Plug>(coc-range-select)
-  xmap <silent> <C-d> <Plug>(coc-range-select)
-  " Use `:Format` to format current buffer
-  command! -nargs=0 Format :call CocAction('format')
-  " Use `:Fold` to fold current buffer
-  command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-  " use `:OR` for organize import of current buffer
-  command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-  " Add status line support, for integration with other plugin, checkout `:h coc-status`
-  set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-" End of vim-plug
+" Code intelligence
+"" nvim-cmp Basic
+ " nvim-lsp setup helper
+Plug 'williamboman/mason.nvim' " lsp setup helper
+Plug 'williamboman/mason-lspconfig.nvim' " lsp setup helper
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+"" snippet
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'rafamadriz/friendly-snippets'
+"" Utils
+Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
+"" Diagnostics, code actions
+Plug 'jose-elias-alvarez/null-ls.nvim'
 call plug#end()
+
+" Simple setup
+lua <<EOF
+  require('lualine').setup()
+  require("nvim-autopairs").setup()
+  require('nvim-ts-autotag').setup()
+  require('gitsigns').setup()
+  require("trouble").setup()
+  require('lspsaga').init_lsp_saga()
+    local keymap = vim.keymap.set
+    keymap("n", "gh", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })  -- Find reference, use <C-t> to jump back
+    keymap({"n","v"}, "<leader>ca", "<cmd>Lspsaga code_action<CR>", { silent = true }) -- Code action
+    keymap("n", "gr", "<cmd>Lspsaga rename<CR>", { silent = true }) -- Rename
+    keymap("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { silent = true }) -- Go Definition, use <C-t> to jump back
+    keymap('n', 'gp', '<Cmd>Lspsaga preview_definition<CR>', opts)
+    keymap("n", "<leader>cd", "<cmd>Lspsaga show_line_diagnostics<CR>", { silent = true })
+    keymap("n", "<leader>cd", "<cmd>Lspsaga show_cursor_diagnostics<CR>", { silent = true })
+    keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
+    keymap("n", "[E", function()
+      require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.ERROR })
+    end, { silent = true }) -- Jump to error
+    keymap("n", "]E", function()
+      require("lspsaga.diagnostic").goto_next({ severity = vim.diagnostic.severity.ERROR })
+    end, { silent = true })
+EOF
+
+" nvim-tree
+lua <<EOF
+  -- disable netrw at the very start of your init.lua (strongly advised)
+  vim.g.loaded = 1
+  vim.g.loaded_netrwPlugin = 1
+
+  require("nvim-tree").setup()
+EOF
+
+" bufferline
+lua <<EOF
+  vim.opt.termguicolors = true -- same as "set termguicolors"
+  require("bufferline").setup{}
+EOF
+
+" nvim-cmp Setups
+set completeopt=menu,menuone,noselect
+lua <<EOF
+  -- Set up nvim-lsp
+  require("mason").setup({
+    automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
+    ui = {
+      icons = {
+        server_installed = "✓",
+        server_pending = "➜",
+        server_uninstalled = "✗"
+      }
+    }
+  })
+  require('lspconfig')['tsserver'].setup{
+    on_attach = on_attach,
+    filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript", "javascriptreact", "javascript.jsx" },
+    flags = lsp_flags,
+  }
+  
+  -- Set up nvim-cmp.
+  local cmp = require'cmp'
+  
+  cmp.setup({
+    snippet = {
+      -- REQUIRED - you must specify a snippet engine
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body)
+      end,
+    },
+    window = {
+      -- completion = cmp.config.window.bordered(),
+      -- documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    }),
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'vsnip'    }, -- For vsnip users.
+    },
+    {
+      { name = 'buffer'   },
+    })
+  })
+EOF
+
+lua <<EOF
+require("null-ls").setup({
+    sources = {
+        require("null-ls").builtins.diagnostics.vale,
+    },
+})
+EOF
 
 set showcmd
 " Spell checking
-  set nospell
-  " Toggle spelling
-  nnoremap <slient> <leader>s :set spell!<cr>
-  set complete+=kspell " Turning on word completion
+set nospell
+" Toggle spelling
+nnoremap <slient> <leader>s :set spell!<cr>
+set complete+=kspell " Turning on word completion
 " Basic setting
-  " Theme
-  set termguicolors
-  set background=dark
-  colorscheme spring-night
-  " ColorScheme change ( janah )
+set number
+set relativenumber
+" Theme
+set background=dark
+colorscheme spring-night
 syntax on
 set signcolumn=yes " Keep signcolumn alway on
 highlight clear SignColumn " Make clear cloro on signcolumn
@@ -251,15 +189,15 @@ set linespace=15
 set nowrap                      " don't wrap lines
 set tags=tags
 set showtabline=2 " Always shows tabline
-" Set default tab behavior
-  " Indent
-  set tabstop=2                   " a tab is four spaces
-  set softtabstop=2               " when hitting <BS>, pretend like a tab is removed, even if spaces
-  set shiftwidth=2                " number of spaces to use for autoindenting
-  set expandtab                   " expand tabs by default (overloadable per file type later)
-  set autoindent                  " always set autoindenting on
-  set smartindent
-  set copyindent                  " copy the previous indentation on autoindenting
+" Indent
+set tabstop=2                   " a tab is four spaces
+set softtabstop=2               " when hitting <BS>, pretend like a tab is removed, even if spaces
+set shiftwidth=2                " number of spaces to use for autoindenting
+set expandtab                   " expand tabs by default (overloadable per file type later)
+set autoindent                  " always set autoindenting on
+set smartindent
+set copyindent                  " copy the previous indentation on autoindenting
+
 set shiftround                  " use multiple of shiftwidth when indenting with '<' and '>'
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
 set ignorecase                  " ignore case when searching
@@ -275,18 +213,18 @@ set backupdir=~/.vim/backup
 set directory=~/.vim/swap
 
 " Key mapping
-  let mapleader = ","
-  let g:mapleader = ","
-  nmap <leader>/ :noh<cr> " Clear highlight
-  nmap <leader>w :w!<cr> " Fast saves
-  nmap <leader>q :q!<cr> " Fast quit
-  nmap <leader>f <C-F><cr> " Fast page down
-  nmap <leader>b <C-B><cr> " Fast page up
-  imap jk <esc><esc>:w<cr> " Easy escaping to normal model
-  imap <leader>; <esc>A;<cr> " Fast add semicolon at end of line
-  nnoremap ,cd :cd %:p:h<CR>:pwd<CR> " Auto change directory to match current file
-  nmap <leader>] :bn<cr> " Quickly go forward to buffer
-  nmap <leader>[ :bp<cr> " Quickly go backward to buffer
+let mapleader = ","
+let g:mapleader = ","
+nmap <leader>/ :noh<cr> " Clear highlight
+nmap <leader>w :w!<cr> " Fast saves
+nmap <leader>q :q!<cr> " Fast quit
+nmap <leader>f <C-F><cr> " Fast page down
+nmap <leader>b <C-B><cr> " Fast page up
+imap jk <esc><esc>:w<cr> " Easy escaping to normal model
+imap <leader>; <esc>A;<cr> " Fast add semicolon at end of line
+nnoremap ,cd :cd %:p:h<CR>:pwd<CR> " Auto change directory to match current file
+nmap <leader>] :bn<cr> " Quickly go forward to buffer
+nmap <leader>[ :bp<cr> " Quickly go backward to buffer
 " Disable auto comment on next line
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
