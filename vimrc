@@ -98,14 +98,27 @@ lua <<EOF
   -- disable netrw at the very start of your init.lua (strongly advised)
   vim.g.loaded = 1
   vim.g.loaded_netrwPlugin = 1
+  local keymap = vim.keymap.set
 
   require("nvim-tree").setup()
+  keymap("n", "<C-b>", "<cmd>NvimTreeToggle<CR>", {noremap = true, silent = true})
 EOF
 
 " bufferline
 lua <<EOF
   vim.opt.termguicolors = true -- same as "set termguicolors"
-  require("bufferline").setup{}
+  require("bufferline").setup({
+    options = {
+      offsets = {
+        {
+          filetype = "NvimTree",
+          text = "File Explorer",
+          highlight = "Directory",
+          text_align = "left"
+        }  
+      }
+    }
+  })
 EOF
 
 " nvim-cmp Setups
@@ -160,9 +173,12 @@ lua <<EOF
 EOF
 
 lua <<EOF
-require("null-ls").setup({
+null_ls = require("null-ls")
+null_ls.setup({
     sources = {
-        require("null-ls").builtins.diagnostics.vale,
+        null_ls.builtins.diagnostics.vale,
+        null_ls.builtins.formatting.json_tool,
+        null_ls.builtins.formatting.prettierd,
     },
 })
 EOF
