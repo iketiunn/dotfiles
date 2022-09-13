@@ -21,7 +21,7 @@ let g:ale_disable_lsp = 1 " Disable ale lsp in favor of coc
 
 " Theme/Status bar
 Plug 'flazz/vim-colorschemes'
-Plug 'marcopaganini/termschool-vim-theme'
+Plug 'jacoborus/tender.vim'
 Plug 'nvim-lualine/lualine.nvim'
 
 " File explorer
@@ -184,29 +184,29 @@ null_ls.setup({
 EOF
 
 set showcmd
-" Spell checking
-set nospell
-" Toggle spelling
-nnoremap <slient> <leader>s :set spell!<cr>
 set complete+=kspell " Turning on word completion
 " Basic setting
 set number
-set relativenumber
+"set relativenumber " Might laggy on low end pc
 " Theme
-set background=dark
-colorscheme spring-night
+"set background=dark
+set t_Co=256
+set t_ut=
+"colorscheme spring-night
+colorscheme tender
 syntax on
+" sing column
 set signcolumn=yes " Keep signcolumn alway on
-highlight clear SignColumn " Make clear cloro on signcolumn
+highlight SignColumn guibg=NONE
+set synmaxcol=120
 set guioptions-=T " Removes top toolbar
 set guioptions-=r " Removes right hand scroll bar
 set go-=L " Removes left hand scroll bar
 set linespace=15
 set nowrap                      " don't wrap lines
 set tags=tags
-set showtabline=2 " Always shows tabline
 " Indent
-set tabstop=2                   " a tab is four spaces
+set tabstop=2                   " a tab is 2 spaces
 set softtabstop=2               " when hitting <BS>, pretend like a tab is removed, even if spaces
 set shiftwidth=2                " number of spaces to use for autoindenting
 set expandtab                   " expand tabs by default (overloadable per file type later)
@@ -234,8 +234,9 @@ let g:mapleader = ","
 nmap <leader>/ :noh<cr> " Clear highlight
 nmap <leader>w :w!<cr> " Fast saves
 nmap <leader>q :q!<cr> " Fast quit
-nmap <leader>f <C-F><cr> " Fast page down
-nmap <leader>b <C-B><cr> " Fast page up
+nmap <leader>d <C-d><cr> " Fast page down
+nmap <leader>u <C-u><cr> " Fast page up
+nmap <leader>b <C-b><cr> " File Explorer
 imap jk <esc><esc>:w<cr> " Easy escaping to normal model
 imap <leader>; <esc>A;<cr> " Fast add semicolon at end of line
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR> " Auto change directory to match current file
