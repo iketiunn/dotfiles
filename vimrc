@@ -21,7 +21,6 @@ let g:ale_disable_lsp = 1 " Disable ale lsp in favor of coc
 
 " Theme/Status bar
 Plug 'flazz/vim-colorschemes'
-Plug 'jacoborus/tender.vim'
 Plug 'nvim-lualine/lualine.nvim'
 
 " File explorer
@@ -75,6 +74,11 @@ lua <<EOF
   require('nvim-ts-autotag').setup()
   require('gitsigns').setup()
   require("trouble").setup()
+  require("nvim-treesitter.configs").setup({
+    ensure_installed = { "typescript" },
+    auto_install = true,
+    highlight = { enable = true }
+  })
   require('lspsaga').init_lsp_saga()
     local keymap = vim.keymap.set
     keymap("n", "gh", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })  -- Find reference, use <C-t> to jump back
@@ -189,15 +193,21 @@ set complete+=kspell " Turning on word completion
 set number
 "set relativenumber " Might laggy on low end pc
 " Theme
-"set background=dark
 set t_Co=256
 set t_ut=
 "colorscheme spring-night
-colorscheme tender
+"set background=dark
+colorscheme minimalist
 syntax on
 " sing column
 set signcolumn=yes " Keep signcolumn alway on
 highlight SignColumn guibg=NONE
+highlight GitSignsAdd guifg=green " Changed depends on theme
+highlight GitSignsChange guifg=yellow
+highlight Comment  guifg=darkgray
+highlight Number  guifg=darkgray
+highlight LineNr guifg=#f3f3f3
+highlight CursorLineNr guifg=white
 set synmaxcol=120
 set guioptions-=T " Removes top toolbar
 set guioptions-=r " Removes right hand scroll bar
