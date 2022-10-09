@@ -57,6 +57,7 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'github/copilot.vim'
 "" snippet
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
@@ -95,6 +96,9 @@ lua <<EOF
     keymap("n", "]E", function()
       require("lspsaga.diagnostic").goto_next({ severity = vim.diagnostic.severity.ERROR })
     end, { silent = true })
+
+    -- For copilot
+    vim.g.copilot_node_command = "/usr/local/opt/node@16/bin/node"
 EOF
 
 " nvim-tree
