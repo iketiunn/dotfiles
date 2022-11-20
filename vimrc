@@ -21,6 +21,8 @@ let g:ale_disable_lsp = 1 " Disable ale lsp in favor of coc
 
 " Theme/Status bar
 Plug 'flazz/vim-colorschemes'
+Plug 'sainnhe/everforest'
+Plug 'Mofiqul/vscode.nvim'
 Plug 'nvim-lualine/lualine.nvim'
 
 " File explorer
@@ -70,13 +72,22 @@ call plug#end()
 
 " Simple setup
 lua <<EOF
-  require('lualine').setup()
+  local c = require('vscode.colors')
+  require('vscode').setup({
+    transparent = true,
+    disable_nvimtree_bg = true,
+  })
+  require('lualine').setup {
+    options = {
+      theme = 'vscode'
+    }
+  }
   require("nvim-autopairs").setup()
   require('nvim-ts-autotag').setup()
   require('gitsigns').setup()
   require("trouble").setup()
   require("nvim-treesitter.configs").setup({
-    ensure_installed = { "typescript" },
+    ensure_installed = { "typescript", "tsx", "elixir", "html","css", "astro" },
     auto_install = true,
     highlight = { enable = true }
   })
@@ -112,6 +123,7 @@ lua <<EOF
   keymap("n", "<C-b>", "<cmd>NvimTreeToggle<CR>", {noremap = true, silent = true})
 EOF
 
+
 " bufferline
 lua <<EOF
   vim.opt.termguicolors = true -- same as "set termguicolors"
@@ -143,11 +155,15 @@ lua <<EOF
       }
     }
   })
+  require('mason-lspconfig').setup{
+    ensure_installed = { "tailwindcss" }
+  }
   require('lspconfig')['tsserver'].setup{
     on_attach = on_attach,
     filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript", "javascriptreact", "javascript.jsx" },
     flags = lsp_flags,
   }
+  require('lspconfig')['tailwindcss'].setup{}
   
   -- Set up nvim-cmp.
   local cmp = require'cmp'
@@ -198,10 +214,6 @@ set number
 "set relativenumber " Might laggy on low end pc
 " Theme
 set t_Co=256
-set t_ut=
-"colorscheme spring-night
-"set background=dark
-colorscheme minimalist
 syntax on
 " sing column
 set signcolumn=yes " Keep signcolumn alway on
@@ -258,9 +270,9 @@ nmap <leader>] :bn<cr> " Quickly go forward to buffer
 nmap <leader>[ :bp<cr> " Quickly go backward to buffer
 " Disable auto comment on next line
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
 " Fix json highlight
 autocmd FileType json syntax match Comment +\/\/.\+$+
+autocmd BufRead,BufEnter *.astro set filetype=astro " Fix astro highlight
 
 " Fix osx terminal mapping issue
 imap <C-@> <C-SPACE>
