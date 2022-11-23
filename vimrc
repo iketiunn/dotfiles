@@ -164,6 +164,7 @@ lua <<EOF
     flags = lsp_flags,
   }
   require('lspconfig')['tailwindcss'].setup{}
+  require('lspconfig').astro.setup{}
   
   -- Set up nvim-cmp.
   local cmp = require'cmp'
