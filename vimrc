@@ -164,7 +164,7 @@ lua <<EOF
     flags = lsp_flags,
   }
   require('lspconfig')['tailwindcss'].setup{}
-  require('lspconfig').astro.setup{}
+  require('lspconfig')['astro'].setup{}
   
   -- Set up nvim-cmp.
   local cmp = require'cmp'
@@ -201,7 +201,7 @@ lua <<EOF
 null_ls = require("null-ls")
 null_ls.setup({
     sources = {
-        null_ls.builtins.diagnostics.vale,
+        --null_ls.builtins.diagnostics.vale,
         null_ls.builtins.formatting.json_tool,
         null_ls.builtins.formatting.prettierd,
     },
@@ -279,3 +279,5 @@ autocmd BufRead,BufEnter *.astro set filetype=astro " Fix astro highlight
 imap <C-@> <C-SPACE>
 vmap <C-@> <C-SPACE>
 cmap <C-@> <C-SPACE>
+" Origin C-c didn't 100% equal to Esc
+imap <C-c> <Esc>
