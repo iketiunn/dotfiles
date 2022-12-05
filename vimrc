@@ -208,6 +208,7 @@ null_ls.setup({
 })
 EOF
 
+
 set showcmd
 set complete+=kspell " Turning on word completion
 " Basic setting
@@ -238,7 +239,7 @@ set softtabstop=2               " when hitting <BS>, pretend like a tab is remov
 set shiftwidth=2                " number of spaces to use for autoindenting
 set expandtab                   " expand tabs by default (overloadable per file type later)
 set autoindent                  " always set autoindenting on
-set smartindent
+filetype plugin indent on
 set copyindent                  " copy the previous indentation on autoindenting
 
 set shiftround                  " use multiple of shiftwidth when indenting with '<' and '>'
@@ -275,9 +276,13 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 autocmd FileType json syntax match Comment +\/\/.\+$+
 autocmd BufRead,BufEnter *.astro set filetype=astro " Fix astro highlight
 
+" trouble.nvim
+nnoremap <leader>, <cmd>TroubleToggle<cr>
+
 " Fix osx terminal mapping issue
 imap <C-@> <C-SPACE>
 vmap <C-@> <C-SPACE>
 cmap <C-@> <C-SPACE>
 " Origin C-c didn't 100% equal to Esc
 imap <C-c> <Esc>
+
