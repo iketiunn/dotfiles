@@ -94,19 +94,10 @@ lua <<EOF
   require('lspsaga').init_lsp_saga()
     local keymap = vim.keymap.set
     keymap("n", "gh", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })  -- Find reference, use <C-t> to jump back
-    keymap({"n","v"}, "<leader>ca", "<cmd>Lspsaga code_action<CR>", { silent = true }) -- Code action
+    keymap({"n","v"}, "g.", "<cmd>Lspsaga code_action<CR>", { silent = true }) -- Code action
     keymap("n", "gr", "<cmd>Lspsaga rename<CR>", { silent = true }) -- Rename
     keymap("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { silent = true }) -- Go Definition, use <C-t> to jump back
-    keymap('n', 'gp', '<Cmd>Lspsaga preview_definition<CR>', opts)
-    keymap("n", "<leader>cd", "<cmd>Lspsaga show_line_diagnostics<CR>", { silent = true })
-    keymap("n", "<leader>cd", "<cmd>Lspsaga show_cursor_diagnostics<CR>", { silent = true })
     keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
-    keymap("n", "[E", function()
-      require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.ERROR })
-    end, { silent = true }) -- Jump to error
-    keymap("n", "]E", function()
-      require("lspsaga.diagnostic").goto_next({ severity = vim.diagnostic.severity.ERROR })
-    end, { silent = true })
 
     -- For copilot
     vim.g.copilot_node_command = "/usr/local/opt/node@16/bin/node"
@@ -156,7 +147,7 @@ lua <<EOF
     }
   })
   require('mason-lspconfig').setup{
-    ensure_installed = { "tailwindcss" }
+    ensure_installed = { "tsserver", "tailwindcss", "astro"}
   }
   require('lspconfig')['tsserver'].setup{
     on_attach = on_attach,
