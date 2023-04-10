@@ -118,3 +118,6 @@ port-udp() {
 }
 
 source ~/.zsh-path
+
+# bun completions
+[ -s "/Users/ike/.bun/_bun" ] && source "/Users/ike/.bun/_bun"
