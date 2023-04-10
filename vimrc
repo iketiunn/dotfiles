@@ -87,7 +87,7 @@ lua <<EOF
   require('gitsigns').setup()
   require("trouble").setup()
   require("nvim-treesitter.configs").setup({
-    ensure_installed = { "typescript", "tsx", "elixir", "html","css", "astro" },
+    ensure_installed = { "typescript", "tsx", "elixir", "html", "css", "astro" },
     auto_install = true,
     highlight = { enable = true }
   })
@@ -147,7 +147,7 @@ lua <<EOF
     }
   })
   require('mason-lspconfig').setup{
-    ensure_installed = { "tsserver", "tailwindcss", "astro"}
+    ensure_installed = { "tsserver", "tailwindcss", "astro" }
   }
   require('lspconfig')['tsserver'].setup{
     on_attach = on_attach,
@@ -156,6 +156,7 @@ lua <<EOF
   }
   require('lspconfig')['tailwindcss'].setup{}
   require('lspconfig')['astro'].setup{}
+  require('lspconfig')['solidity'].setup{}
   
   -- Set up nvim-cmp.
   local cmp = require'cmp'
@@ -196,6 +197,20 @@ null_ls.setup({
         null_ls.builtins.formatting.json_tool,
         null_ls.builtins.formatting.prettierd,
     },
+    on_attach = function(client, bufnr)
+        if client.supports_method("textDocument/formatting") then
+            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                group = augroup,
+                buffer = bufnr,
+                callback = function()
+                    -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+                    -- before 0.8 use vim.lsp.buf.formatting_sync()
+                    vim.lsp.buf.format({ bufnr = bufnr }) 
+                end,
+            })
+        end
+    end,
 })
 EOF
 
