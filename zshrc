@@ -117,6 +117,10 @@ port-udp() {
   ) | awk '{ printf "%-16s %-6s %-9s %-5s %-7s %s:%s\n",$1,$2,$3,$5,$8,$9,$10 }'
 }
 
+base64-to-hex() {
+  echo $1 | base64 --decode | xxd -p | sed 's/../& /g'
+}
+
 source ~/.zsh-path
 
 # bun completions

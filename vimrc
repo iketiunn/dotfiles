@@ -72,11 +72,12 @@ call plug#end()
 
 " Simple setup
 lua <<EOF
-  local c = require('vscode.colors')
+  local c = require('vscode.colors').get_colors()
   require('vscode').setup({
     transparent = true,
     disable_nvimtree_bg = true,
   })
+  require('vscode').load()
   require('lualine').setup {
     options = {
       theme = 'vscode'
@@ -91,7 +92,7 @@ lua <<EOF
     auto_install = true,
     highlight = { enable = true }
   })
-  require('lspsaga').init_lsp_saga()
+  require('lspsaga').setup()
     local keymap = vim.keymap.set
     keymap("n", "gh", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })  -- Find reference, use <C-t> to jump back
     keymap({"n","v"}, "g.", "<cmd>Lspsaga code_action<CR>", { silent = true }) -- Code action
