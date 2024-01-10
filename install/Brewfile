@@ -1,19 +1,17 @@
 # Deps for install
 tap "rs/tap" # curlie
 tap "homebrew/bundle"
-tap "homebrew/core"
-tap "homebrew/cask"
+#tap "homebrew/core"
+#tap "homebrew/cask"
 tap "homebrew/cask-fonts"
   cask "font-jetbrains-mono-nerd-font"
-tap "adoptopenjdk/openjdk"  # for react-native
-brew "mas"
 
 # General dev
 # Dep libs
-brew "cmake"
+#brew "cmake"
 # Lang
-brew "node"
-brew "elixir"
+#brew "node"
+#brew "elixir"
 # Cli thing
 brew "git"
 brew "git-delta" # https://github.com/dandavison/delta
@@ -22,7 +20,7 @@ brew "neovim"
 brew "bat" # Better cat
 brew "wget"
 brew "tree"
-brew "tmux"
+#brew "tmux"
 brew "curlie" # httpie golang export, better curl
 brew "tldr"
 brew "jq"
@@ -30,10 +28,10 @@ brew "fd" # Better find
 brew "fzf"
 brew "the_silver_searcher" # ag, grep for code
 brew "watchman" # For react-native
-brew "libpq", link: true # For psql without whole database
+#brew "libpq", link: true # For psql without whole database
 brew "nmap"
-brew "wrk"
-brew "iproute2mac"
+#brew "wrk"
+#brew "iproute2mac"
 # zsh
 brew "zsh"
   brew "z"
@@ -42,27 +40,27 @@ brew "zsh"
   brew "zsh-completions"
   brew "zsh-autosuggestions"
 # Cloud dev
-brew "pulumi"
-brew "awscli"
-brew "devspace"
+#brew "pulumi"
+#brew "awscli"
+#brew "devspace"
   # Replace Docker Desktop
-  brew "docker" # Docker cli
-  brew "hyperkit"
-  brew "kubectl"
-  brew "minibuke"
+  #brew "docker" # Docker cli
+  #brew "hyperkit"
+  #brew "kubectl"
+  #brew "minibuke"
 
 # Directory to install
 cask_args appdir: "/Applications"
 # Cask / GUI
-cask "dozer" # Hide menu bar icons on macS
-cask "spectacle" # For tilling window
-cask "iterm2"
-cask "visual-studio-code"
-cask "brave-browser"
+#cask "dozer" # Hide menu bar icons on macS
+#cask "spectacle" # For tilling window
+#cask "iterm2"
+#cask "visual-studio-code"
+#cask "brave-browser"
 cask "iina" # The modern media player for macOS
-cask "itsycal" # Itsycal is a tiny menu bar calendar.
+#cask "itsycal" # Itsycal is a tiny menu bar calendar.
 cask "the-unarchiver"
-cask "adoptopenjdk8" # for react-native
+#cask "adoptopenjdk8" # for react-native
 
 # Mas
 #mas "Xcode", id: 497799835
