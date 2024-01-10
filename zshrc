@@ -11,17 +11,17 @@
   if type brew &>/dev/null; then
     FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
   fi
-  autoload -Uz compinit && compinit
+  autoload -Uz compinit && compinit -u
   zstyle ':completion:*' menu select # Arrow-key driven interface
   setopt COMPLETE_ALIASES
   zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' # Case-insensitive matching
 # Style
   [[ $TMUX = "" ]] && export TERM="xterm-256color"
 # zsh plugins
-  fpath=(/usr/local/share/zsh-completions $fpath)
-  . /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-  . /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-  . /usr/local/etc/profile.d/z.sh
+  fpath=(/opt/homebrew/local/share/zsh-completions $fpath)
+  source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+  . /opt/homebrew/etc/profile.d/z.sh
     unalias z
     z() {
       if [[ -z "$*" ]]; then
@@ -70,8 +70,8 @@ alias vim=nvim
   alias ...="../.."
   alias ....="../../.."
   # Improves
-  alias tree="tree -I \"$(cat .gitignore 2>&1 | egrep -v '^$|!|#' | sed 's/\/\*//' | tr -s '\n' '|')\""
-  #alias cat="bat"
+  alias gittree='if [ -e .gitignore ]; then TMP_FILE=$(mktemp); grep -v -f .gitignore <(tree -a -I "$(git ls-files --ignored --exclude-standard)" --noreport) > "$TMP_FILE"; cat "$TMP_FILE"; rm "$TMP_FILE"; else tree -a --noreport; fi'
+  alias cat="bat"
   # Python utils
   alias py-srv="python -m SimpleHTTPServer"
   alias py-jq="python -m json.tool"
@@ -83,11 +83,6 @@ alias vim=nvim
   setopt autocd autopushd
   # Same ">", ">>" behavior like bash
   setopt clobber
-
-# Startup with tmux, TODO intergration with vscode is annoying
-  #if [[ -z $TMUX ]]; then
-  #  pgrep tmux && tmux
-  #fi
 
 # Prompt
   export PROMPT="%1~ λ " # Show only current dir, tmx shows last 2
@@ -125,3 +120,7 @@ source ~/.zsh-path
 
 # bun completions
 [ -s "/Users/ike/.bun/_bun" ] && source "/Users/ike/.bun/_bun"
+
+# fnm
+export PATH="/Users/ike/Library/Application Support/fnm:$PATH"
+eval "$(fnm env --use-on-cd)"
