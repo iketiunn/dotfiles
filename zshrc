@@ -71,7 +71,6 @@ alias vim=nvim
   alias ....="../../.."
   # Improves
   alias gittree='if [ -e .gitignore ]; then TMP_FILE=$(mktemp); grep -v -f .gitignore <(tree -a -I "$(git ls-files --ignored --exclude-standard)" --noreport) > "$TMP_FILE"; cat "$TMP_FILE"; rm "$TMP_FILE"; else tree -a --noreport; fi'
-  alias cat="bat"
   # Python utils
   alias py-srv="python -m SimpleHTTPServer"
   alias py-jq="python -m json.tool"
@@ -118,9 +117,4 @@ base64-to-hex() {
 
 source ~/.zsh-path
 
-# bun completions
-[ -s "/Users/ike/.bun/_bun" ] && source "/Users/ike/.bun/_bun"
-
-# fnm
-export PATH="/Users/ike/Library/Application Support/fnm:$PATH"
-eval "$(fnm env --use-on-cd)"
+eval "$(atuin init zsh --disable-up-arrow)"
