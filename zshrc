@@ -86,11 +86,11 @@ alias vim=nvim
 # Prompt
   export PROMPT="%1~ λ " # Show only current dir, tmx shows last 2
   export RPROMPT="%T"
-  # Make right prompt time reset every 10 seconds
-  TMOUT=10
-  TRAPALRM() {
-      zle reset-prompt
-  }
+  # Make right prompt time reset every 10 seconds (breaks with atuin)
+  #TMOUT=10
+  #TRAPALRM() {
+  #    zle reset-prompt
+  #}
 
 # Functions
 port-tcp() {
@@ -117,4 +117,10 @@ base64-to-hex() {
 
 source ~/.zsh-path
 
+# fnm
+eval "$(fnm env --use-on-cd)"
+# atuin: ctrl+r alternative, but it may break new line somehow
 eval "$(atuin init zsh --disable-up-arrow)"
+# github copilot, if u feel laggy, turn off the Usage Analytics by "gh copilot config"
+eval "$(gh copilot alias -- zsh)"
+
