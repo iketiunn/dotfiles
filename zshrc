@@ -72,8 +72,8 @@ alias vim=nvim
   # Improves
   alias gittree='if [ -e .gitignore ]; then TMP_FILE=$(mktemp); grep -v -f .gitignore <(tree -a -I "$(git ls-files --ignored --exclude-standard)" --noreport) > "$TMP_FILE"; cat "$TMP_FILE"; rm "$TMP_FILE"; else tree -a --noreport; fi'
   # Python utils
-  alias py-srv="python -m SimpleHTTPServer"
-  alias py-jq="python -m json.tool"
+  alias py-srv="python3 -m http.server"
+  alias py-jq="python3 -m json.tool"
 
 # Misc
   # cd & ls
@@ -124,3 +124,6 @@ eval "$(atuin init zsh --disable-up-arrow)"
 # github copilot, if u feel laggy, turn off the Usage Analytics by "gh copilot config"
 eval "$(gh copilot alias -- zsh)"
 
+
+# Created by `pipx` on 2024-10-27 12:36:36
+export PATH="$PATH:/Users/ike/.local/bin"
