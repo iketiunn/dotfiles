@@ -59,7 +59,7 @@
   setopt autocd autopushd
   setopt clobber # Same ">", ">>" behavior like bash
 # Prompt
-  export PROMPT="%1~ ▸ " # Show only current dir, tmx shows last 2
+  export PROMPT="%1~ # " # Show only current dir, tmx shows last 2
   export RPROMPT="%T"
 # Functions
 ls-port-tcp() {
