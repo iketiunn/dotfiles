@@ -20,26 +20,12 @@
   eval "$(gh copilot alias -- zsh)" # github copilot 
 # Style
   [[ $TMUX = "" ]] && export TERM="xterm-256color"
-# Plugins
+# Shell Plugins
   fpath=(/opt/homebrew/local/share/zsh-completions $fpath)
   source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-  . /opt/homebrew/etc/profile.d/z.sh
-    unalias z
-    z() {
-      if [[ -z "$*" ]]; then
-        cd "$(_z -l 2>&1 | fzf +s --tac | sed 's/^[0-9,.]* *//')"
-      else
-        _last_z_args="$@"
-        _z "$@"
-      fi
-    }
-
-    zz() {
-      cd "$(_z -l 2>&1 | sed 's/^[0-9,.]* *//' | fzf -q "$_last_z_args")"
-    }
-    alias j=z
-    alias jj=zz
+  # zoxide, smarter cd
+  [ command -v zoxide >/dev/null 2>&1 ] && eval "$(zoxide init zsh)"
   # FZF
     [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
     export FZF_DEFAULT_COMMAND='fd --type f' # Respecting .gitignore
@@ -48,12 +34,8 @@
       --color fg:242,bg:233,hl:65,fg+:15,bg+:234,hl+:108
       --color info:108,prompt:109,spinner:108,pointer:168,marker:168
     '
-  # vscode
-  if command -v code-insiders >/dev/null 2>&1; then
-    alias code="code-insiders"
-  elif command -v code >/dev/null 2>&1; then
-    alias code="code"
-  fi
+  [ command -v fnm >/dev/null 2>&1 ] && eval "$(fnm env --use-on-cd)" # fnm, Node.js version manager. Enable auto-switching
+  [ command -v atuin >/dev/null 2>&1 ] && eval "$(atuin init zsh --disable-up-arrow)" # atuin, ctrl+r alternative
 # Misc
   function chpwd() { emulate -L zsh; ls } # overwrite cd to cd & ls
   setopt autocd autopushd
@@ -112,8 +94,12 @@ google() {
     alias "$do=cd $pa"
   done
   alias gr='cd "$(git rev-parse --show-toplevel)"' # Go to current git project root
+  alias vim="nvim"
+  # vscode
+  if command -v code-insiders >/dev/null 2>&1; then
+    alias code="code-insiders"
+  elif command -v code >/dev/null 2>&1; then
+    alias code="code"
+  fi
 
 source ~/.zsh-path
-
-[ command -v fnm >/dev/null 2>&1 ] && eval "$(fnm env --use-on-cd)" # fnm, Node.js version manager. Enable auto-switching
-[ command -v atuin >/dev/null 2>&1 ] && eval "$(atuin init zsh --disable-up-arrow)" # atuin, ctrl+r alternative
