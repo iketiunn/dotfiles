@@ -1,0 +1,34 @@
+[color]
+	ui = true
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore_global
+	pager = less --tabs 3
+[alias]
+	cm = commit -m
+	co = checkout
+	st = status
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	rup = remote update -p
+	rb = !git remote update && git branch --merged | grep -Ev \"(^\\*|master|main|dev)\" | xargs git branch -d
+[format]
+	pretty = format:%C(auto)%h %d%Creset %s%n%Cgreen%ad%Creset %aN <%aE>%n
+[user]
+	# Remember to change to your name & email, this is perfect to "me".
+	name = ike.chang
+	email = ike.chang@sideeffect.dev
+[includeIf "gitdir:~/"]
+  # Use your custom directory specific config in .gitconfig-custom. Look examples in gitconfig-custom.example
+  path = .gitconfig-custom
+[push]
+	default = simple
+	autoSetupRemote = true
+[branch]
+	autosetuprebase = always
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[init]
+	defaultBranch = main
