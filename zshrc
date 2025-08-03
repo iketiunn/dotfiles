@@ -24,8 +24,6 @@
   fpath=(/opt/homebrew/local/share/zsh-completions $fpath)
   source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-  # zoxide, smarter cd
-  [ command -v zoxide >/dev/null 2>&1 ] && eval "$(zoxide init zsh)"
   # FZF
     [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
     export FZF_DEFAULT_COMMAND='fd --type f' # Respecting .gitignore
@@ -34,8 +32,9 @@
       --color fg:242,bg:233,hl:65,fg+:15,bg+:234,hl+:108
       --color info:108,prompt:109,spinner:108,pointer:168,marker:168
     '
-  [ command -v fnm >/dev/null 2>&1 ] && eval "$(fnm env --use-on-cd)" # fnm, Node.js version manager. Enable auto-switching
-  [ command -v atuin >/dev/null 2>&1 ] && eval "$(atuin init zsh --disable-up-arrow)" # atuin, ctrl+r alternative
+  command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)" # zoxide, smarter cd
+  command -v fnm >/dev/null 2>&1 && eval "$(fnm env --use-on-cd)" # fnm, Node.js version manager. Enable auto-switching
+  command -v atuin >/dev/null 2>&1 && eval "$(atuin init zsh --disable-up-arrow)" # atuin, ctrl+r alternative
 # Misc
   function chpwd() { emulate -L zsh; ls } # overwrite cd to cd & ls
   setopt autocd autopushd
