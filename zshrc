@@ -16,7 +16,10 @@
     FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
   fi
   autoload -Uz compinit && compinit -u
-  [ -s "/Users/ike/.bun/_bun" ] && source "/Users/ike/.bun/_bun" # bun path
+  if [ -s "$HOME/.bun/_bun" ]; then
+    source "$HOME/.bun/_bun"
+    export PATH="$HOME/.bun/bin:$PATH"
+  fi
   eval "$(gh copilot alias -- zsh)" # github copilot 
 # Style
   [[ $TMUX = "" ]] && export TERM="xterm-256color"
@@ -33,8 +36,34 @@
       --color info:108,prompt:109,spinner:108,pointer:168,marker:168
     '
   command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)" # zoxide, smarter cd
-  command -v fnm >/dev/null 2>&1 && eval "$(fnm env --use-on-cd)" # fnm, Node.js version manager. Enable auto-switching
   command -v atuin >/dev/null 2>&1 && eval "$(atuin init zsh --disable-up-arrow)" # atuin, ctrl+r alternative
+  command -v fnm >/dev/null 2>&1 && eval "$(fnm env --use-on-cd)" # fnm, Node.js version manager. Enable auto-switching
+  #command -v corepack >/dev/null 2>&1 && eval "$(corepack enable)" # bridge between Node projects and their package managers
+  command -v node >/dev/null && { # unify node package managers
+    np() {
+      local pm
+      if   [ -f bun.lockb ]; then pm="bun"
+      elif [ -f pnpm-lock.yaml ]; then pm="pnpm"
+      elif [ -f yarn.lock ]; then pm="yarn"
+      elif [ -f package-lock.json ]; then pm="npm"
+      else pm="bun"
+      fi
+      command -v "$pm" >/dev/null || {
+        echo "🚫 Package manager '$pm' not found"; return 127
+      }
+
+      command "$pm" "$@"
+    }
+
+    alias npx="bunx"
+  
+    ##
+    # Hard restrictions
+    ##
+    #for pm in npm yarn pnpm; do
+    #  eval "$pm() { echo >&2 \"🚫 '$pm' is disabled. Use 'np' instead.\"; return 1; }"
+    #done
+  }
 # Misc
   function chpwd() { emulate -L zsh; ls } # overwrite cd to cd & ls
   setopt autocd autopushd
@@ -59,15 +88,18 @@ ls-port-udp() {
     ) | sed -E 's/ ([^ ]+):/ \1 /' | sort -k8,8 -k5,5 -k1,1 -k10,10n
   ) | awk '{ printf "%-16s %-6s %-9s %-5s %-7s %s:%s\n",$1,$2,$3,$5,$8,$9,$10 }'
 }
-kimi() {
+c() {
   # Set your api keys in ~/.zprofile
-  export ANTHROPIC_BASE_URL="https://api.moonshot.ai/anthropic"
-  export ANTHROPIC_AUTH_TOKEN="$KIMI_API_KEY"
+  export ANTHROPIC_BASE_URL="https://api.z.ai/api/anthropic"
+  export ANTHROPIC_AUTH_TOKEN="$ZAI_API_KEY"
+  export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"
+  export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-4.6"
+  export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-4.6"
 
   args=()
 
   while getopts "ty" flag; do
-    [[ $flag == "t" ]] && export ANTHROPIC_MODEL="kimi-k2-turbo-preview" ANTHROPIC_SMALL_FAST_MODEL="kimi-k2-turbo-preview"
+    #[[ $flag == "t" ]] && export ANTHROPIC_MODEL="kimi-k2-turbo-preview" ANTHROPIC_SMALL_FAST_MODEL="kimi-k2-turbo-preview"
     [[ $flag == "y" ]] && args+=(--dangerously-skip-permissions)
   done
 
