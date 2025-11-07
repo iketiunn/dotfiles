@@ -98,13 +98,55 @@ c() {
 
   args=()
 
-  while getopts "ty" flag; do
-    #[[ $flag == "t" ]] && export ANTHROPIC_MODEL="kimi-k2-turbo-preview" ANTHROPIC_SMALL_FAST_MODEL="kimi-k2-turbo-preview"
-    [[ $flag == "y" ]] && args+=(--dangerously-skip-permissions)
+  # Simple manual flag handling (only for -y)
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -y)
+        args+=(--dangerously-skip-permissions)
+        shift
+        ;;
+      -p)
+        shift
+        prompt="$1"
+        #export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-airx"
+        export ANTHROPIC_DEFAULT_SONNET_MODEL=$ANTHROPIC_DEFAULT_HAIKU_MODEL
+        export ANTHROPIC_DEFAULT_OPUS_MODEL=$ANTHROPIC_DEFAULT_HAIKU_MODEL
+        args+=(-p "$prompt")
+        shift
+        ;;
+      --)
+        shift
+        break
+        ;;
+      *)
+        break
+        ;;
+    esac
   done
 
-  shift $((OPTIND - 1))
   claude "${args[@]}" "$@"
+}
+gcc() {
+  start_time=$(date +%s)
+
+  echo "🤖 Getting commit message from Claude..."
+  msg=$(git diff --cached --stat | c -p \
+    "Write a concise Conventional Commit title summarizing these staged changes. Respond only with the title.")
+
+  end_time=$(date +%s)
+
+  # Check if message is empty or just whitespace
+  if [[ -z "$msg" || "$msg" =~ ^[[:space:]]*$ ]]; then
+    echo "❌ Failed to get commit message from Claude"
+    echo "⏱  Response time: $((end_time - start_time))s"
+    return 1
+  fi
+
+  echo "⏱  Response time: $((end_time - start_time))s"
+  echo "💡 Suggested - \"$msg\""
+  printf "Press Enter to commit, Ctrl-C to cancel... "
+  read
+  git commit -m "$msg"
 }
 google() {
   gemini -p "Search google for <query>$1</query> and summarize the results"
