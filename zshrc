@@ -161,7 +161,7 @@ gccc() {
           - Body lines MUST wrap at 72 characters
           - Body should briefly explain WHAT and WHY (not HOW)
           Content:
-            $(git diff --cached --stat)
+            $(git diff --cached)
         " |
       grep -Eo '(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([^)]+\))?(!)?: .+' |
       head -n 1
