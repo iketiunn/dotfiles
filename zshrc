@@ -69,7 +69,7 @@
   setopt autocd autopushd
   setopt clobber # Same ">", ">>" behavior like bash
 # Prompt
-  export PROMPT="%1~ # " # Show only current dir, tmx shows last 2
+  export PROMPT="%1~ λ " # Show only current dir, tmx shows last 2
   export RPROMPT="%T"
 # Functions
 ls-port-tcp() {
@@ -89,12 +89,24 @@ ls-port-udp() {
   ) | awk '{ printf "%-16s %-6s %-9s %-5s %-7s %s:%s\n",$1,$2,$3,$5,$8,$9,$10 }'
 }
 c() {
+  fnm use 24
   # Set your api keys in ~/.zprofile
-  export ANTHROPIC_BASE_URL="https://api.z.ai/api/anthropic"
-  export ANTHROPIC_AUTH_TOKEN="$ZAI_API_KEY"
-  export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"
-  export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-4.6"
-  export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-4.6"
+  #export ANTHROPIC_BASE_URL="https://api.z.ai/api/anthropic"
+  #export ANTHROPIC_AUTH_TOKEN="$ZAI_API_KEY"
+  #export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"
+  #export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-4.7"
+  #export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-4.7"
+  #export ANTHROPIC_BASE_URL="https://api.minimax.io/anthropic"
+  #export ANTHROPIC_AUTH_TOKEN="$MINIMAX_API_KEY"
+  #export ANTHROPIC_DEFAULT_HAIKU_MODEL="MiniMax-M2.1"
+  #export ANTHROPIC_DEFAULT_SONNET_MODEL="MiniMax-M2.1"
+  #export ANTHROPIC_BASE_URL="https://api.moonshot.ai/anthropic"
+  #export ANTHROPIC_AUTH_TOKEN="$KIMI_API_KEY"
+  #export ANTHROPIC_DEFAULT_HAIKU_MODEL="kimi-k2-thinking-turbo"
+  #export ANTHROPIC_DEFAULT_SONNET_MODEL="kimi-k2-thinking-turbo"
+  #export ANTHROPIC_DEFAULT_OPUS_MODEL="kimi-k2-thinking-turbo"
+  #export ANTHROPIC_DEFAULT_OPUS_MODEL="kimi-k2-thinking-turbo"
+  # set in ~/.claude/settings.json
 
   args=()
 
@@ -126,30 +138,42 @@ c() {
 
   claude "${args[@]}" "$@"
 }
-gcc() {
-  start_time=$(date +%s)
+gccc() {
+  command -v gemini >/dev/null 2>&1 || {
+    echo "❌ gemini CLI not found"
+    return 127
+  }
 
-  echo "🤖 Getting commit message from Claude..."
-  msg=$(git diff --cached --stat | c -p \
-    "Write a concise Conventional Commit title summarizing these staged changes. Respond only with the title.")
-
-  end_time=$(date +%s)
-
-  # Check if message is empty or just whitespace
-  if [[ -z "$msg" || "$msg" =~ ^[[:space:]]*$ ]]; then
-    echo "❌ Failed to get commit message from Claude"
-    echo "⏱  Response time: $((end_time - start_time))s"
+  git diff --cached --quiet && {
+    echo "❌ No staged changes to commit"
     return 1
-  fi
+  }
 
-  echo "⏱  Response time: $((end_time - start_time))s"
-  echo "💡 Suggested - \"$msg\""
-  printf "Press Enter to commit, Ctrl-C to cancel... "
-  read
-  git commit -m "$msg"
+  local msg
+  msg=$(
+    git diff --cached --stat |
+      gemini -p 'Output exactly one concise Conventional Commit title and nothing else. Input is the staged git diff --stat from stdin.' |
+      sed -nE 's/.*((feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([^)]+\))?(!)?: .*)/\1/p' |
+      head -n 1
+  ) || {
+    echo "❌ Failed to get commit message from Gemini"
+    return 1
+  }
+
+  [[ -n "$msg" ]] || {
+    echo "❌ Failed to parse commit message"
+    return 1
+  }
+
+  echo "💡 $msg"
+  read -r "?Press Enter to commit, Ctrl-C to cancel... " || return 130
+  git commit -e -m "$msg"
 }
 google() {
   gemini -p "Search google for <query>$1</query> and summarize the results"
+}
+tree() {
+  command tree -C "$@" | sed 's/\xc2\xa0/ /g'
 }
 # Alias
   alias l="ls -G"
@@ -176,3 +200,7 @@ google() {
   fi
 
 source ~/.zsh-path
+
+# peon-ping quick controls
+alias peon="bash /Users/ike/.claude/hooks/peon-ping/peon.sh"
+[ -f /Users/ike/.claude/hooks/peon-ping/completions.bash ] && source /Users/ike/.claude/hooks/peon-ping/completions.bash
