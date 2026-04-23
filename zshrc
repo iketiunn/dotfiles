@@ -151,9 +151,19 @@ gccc() {
 
   local msg
   msg=$(
-    git diff --cached --stat |
-      gemini -p 'Output exactly one concise Conventional Commit title and nothing else. Input is the staged git diff --stat from stdin.' |
-      sed -nE 's/.*((feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([^)]+\))?(!)?: .*)/\1/p' |
+      gemini -p "
+        Generate ONE Conventional Commit message from the following git staged diff.
+        Rules:
+          - Output ONLY the commit message, no explanation
+          - Format: <type>(optional-scope): <subject>
+          - Subject MUST be <= 50 characters, imperative mood, clear intent
+          - Add a body after one blank line
+          - Body lines MUST wrap at 72 characters
+          - Body should briefly explain WHAT and WHY (not HOW)
+          Content:
+            $(git diff --cached --stat)
+        " |
+      grep -Eo '(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([^)]+\))?(!)?: .+' |
       head -n 1
   ) || {
     echo "❌ Failed to get commit message from Gemini"
@@ -165,9 +175,9 @@ gccc() {
     return 1
   }
 
-  echo "💡 $msg"
+  echo "🤖 $msg"
   read -r "?Press Enter to commit, Ctrl-C to cancel... " || return 130
-  git commit -e -m "$msg"
+  git commit -m "$msg"
 }
 google() {
   gemini -p "Search google for <query>$1</query> and summarize the results"
