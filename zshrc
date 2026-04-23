@@ -143,11 +143,13 @@ gccc() {
     echo "❌ gemini CLI not found"
     return 127
   }
-
   git diff --cached --quiet && {
     echo "❌ No staged changes to commit"
     return 1
   }
+  if ! git diff --quiet || [[ -n "$(git ls-files --others --exclude-standard)" ]]; then
+    echo "⚠️  You have unstaged or untracked changes"
+  fi
 
   local msg
   msg=$(
