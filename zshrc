@@ -143,39 +143,50 @@ gccc() {
     echo "❌ gemini CLI not found"
     return 127
   }
-  git diff --cached --quiet && {
-    echo "❌ No staged changes to commit"
+
+  # 確保 fnm 可用（非 interactive shell 常常沒載入）
+  eval "$(fnm env --use-on-cd)"
+
+  # 記住當前版本
+  local OLD_NODE
+  OLD_NODE=$(fnm current)
+
+  # 切到 node 24
+  fnm use 24 >/dev/null || {
+    echo "❌ Node 24 not installed"
     return 1
   }
+
+  git diff --cached --quiet && {
+    echo "❌ No staged changes to commit"
+    fnm use "$OLD_NODE" >/dev/null
+    return 1
+  }
+
   if ! git diff --quiet || [[ -n "$(git ls-files --others --exclude-standard)" ]]; then
     echo "⚠️  You have unstaged or untracked changes"
   fi
 
   local msg
   msg=$(
-      gemini -p "
-        Generate ONE Conventional Commit message from the following git staged diff.
-        Rules:
-          - Output ONLY the commit message, no explanation
-          - Format: <type>(optional-scope): <subject>
-          - Subject MUST be <= 50 characters, imperative mood, clear intent
-          - Add a body after one blank line
-          - Body lines MUST wrap at 72 characters
-          - Body should briefly explain WHAT and WHY (not HOW)
-          Content:
-            $(git diff --cached)
-        " |
-      grep -Eo '(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([^)]+\))?(!)?: .+' |
-      head -n 1
+    gemini -p "
+      Generate ONE Conventional Commit message from the following git staged diff.
+      Rules:
+        - Output ONLY the commit message, no explanation
+        - Format: <type>(optional-scope): <subject>
+        - Subject MUST be <= 50 characters
+        - Add a body after one blank line
+      Content:
+        $(git diff --cached)
+    "
   ) || {
-    echo "❌ Failed to get commit message from Gemini"
+    echo "❌ Failed to get commit message"
+    fnm use "$OLD_NODE" >/dev/null
     return 1
   }
 
-  [[ -n "$msg" ]] || {
-    echo "❌ Failed to parse commit message"
-    return 1
-  }
+  # 還原 Node 版本
+  fnm use "$OLD_NODE" >/dev/null
 
   echo "🤖 $msg"
   read -r "?Press Enter to commit, Ctrl-C to cancel... " || return 130
