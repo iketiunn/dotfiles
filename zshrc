@@ -144,14 +144,10 @@ gccc() {
     return 127
   }
 
-  # 確保 fnm 可用（非 interactive shell 常常沒載入）
+  # TODO use latest node
   eval "$(fnm env --use-on-cd)"
-
-  # 記住當前版本
   local OLD_NODE
   OLD_NODE=$(fnm current)
-
-  # 切到 node 24
   fnm use 24 >/dev/null || {
     echo "❌ Node 24 not installed"
     return 1
@@ -175,7 +171,6 @@ gccc() {
         - Output ONLY the commit message, no explanation
         - Format: <type>(optional-scope): <subject>
         - Subject MUST be <= 50 characters
-        - Add a body after one blank line
       Content:
         $(git diff --cached)
     "
@@ -197,6 +192,86 @@ google() {
 }
 tree() {
   command tree -C "$@" | sed 's/\xc2\xa0/ /g'
+}
+vidc() {
+  local mode="normal"
+  local crf="26"
+  local width="1280"
+  local audio_bitrate="128k"
+
+  while [[ "$1" == -* ]]; do
+    case "$1" in
+      -s|--small)
+        mode="small"
+        crf="30"
+        width="960"
+        audio_bitrate="96k"
+        shift
+        ;;
+      -t|--tiny)
+        mode="tiny"
+        crf="34"
+        width="720"
+        audio_bitrate="64k"
+        shift
+        ;;
+      -q|--quality)
+        crf="$2"
+        shift 2
+        ;;
+      -w|--width)
+        width="$2"
+        shift 2
+        ;;
+      -h|--help)
+        echo "Usage: vidc [-s|--small] [-t|--tiny] [-q CRF] [-w WIDTH] input_video [output.mp4]"
+        echo ""
+        echo "Examples:"
+        echo "  vidc recording.mov"
+        echo "  vidc --small recording.mov"
+        echo "  vidc --tiny recording.mov"
+        echo "  vidc -q 28 -w 1024 recording.mov"
+        return 0
+        ;;
+      *)
+        echo "Unknown option: $1"
+        echo "Run: vidc --help"
+        return 1
+        ;;
+    esac
+  done
+
+  if [ $# -lt 1 ]; then
+    echo "Usage: vidc [-s|--small] [-t|--tiny] [-q CRF] [-w WIDTH] input_video [output.mp4]"
+    return 1
+  fi
+
+  local input="$1"
+  local suffix="compressed"
+
+  if [[ "$mode" == "small" ]]; then
+    suffix="small"
+  elif [[ "$mode" == "tiny" ]]; then
+    suffix="tiny"
+  fi
+
+  local output="${2:-${input%.*}-${suffix}.mp4}"
+
+  if [ ! -f "$input" ]; then
+    echo "File not found: $input"
+    return 1
+  fi
+
+  ffmpeg -i "$input" \
+    -vf "scale='min(${width},iw)':-2" \
+    -c:v libx264 \
+    -preset slow \
+    -crf "$crf" \
+    -pix_fmt yuv420p \
+    -c:a aac \
+    -b:a "$audio_bitrate" \
+    -movflags +faststart \
+    "$output"
 }
 # Alias
   alias l="ls -G"
