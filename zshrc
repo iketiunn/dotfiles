@@ -226,7 +226,7 @@ vidc() {
       -h|--help)
         echo "Usage: vidc [-s|--small] [-t|--tiny] [-q CRF] [-w WIDTH] input_video [output.mp4]"
         echo ""
-        echo "Examples:"
+        echo "Use ffmpeg to compress, Examples:"
         echo "  vidc recording.mov"
         echo "  vidc --small recording.mov"
         echo "  vidc --tiny recording.mov"
