@@ -195,7 +195,7 @@ tree() {
 }
 vidc() {
   local mode="normal"
-  local crf="26"
+  local crf="23"
   local width="1280"
   local audio_bitrate="128k"
 
@@ -224,13 +224,14 @@ vidc() {
         shift 2
         ;;
       -h|--help)
-        echo "Usage: vidc [-s|--small] [-t|--tiny] [-q CRF] [-w WIDTH] input_video [output.mp4]"
+        echo "Usage: vidc [-s|--small] [-t|--tiny] [-q CRF] [-w WIDTH] input_video_or_url [output.mp4]"
         echo ""
         echo "Use ffmpeg to compress, Examples:"
         echo "  vidc recording.mov"
         echo "  vidc --small recording.mov"
         echo "  vidc --tiny recording.mov"
         echo "  vidc -q 28 -w 1024 recording.mov"
+        echo "  vidc https://example.com/video.webm"
         return 0
         ;;
       *)
@@ -242,12 +243,17 @@ vidc() {
   done
 
   if [ $# -lt 1 ]; then
-    echo "Usage: vidc [-s|--small] [-t|--tiny] [-q CRF] [-w WIDTH] input_video [output.mp4]"
+    echo "Usage: vidc [-s|--small] [-t|--tiny] [-q CRF] [-w WIDTH] input_video_or_url [output.mp4]"
     return 1
   fi
 
   local input="$1"
+  local is_url=0
   local suffix="compressed"
+
+  if [[ "$input" == http://* || "$input" == https://* ]]; then
+    is_url=1
+  fi
 
   if [[ "$mode" == "small" ]]; then
     suffix="small"
@@ -255,9 +261,21 @@ vidc() {
     suffix="tiny"
   fi
 
-  local output="${2:-${input%.*}-${suffix}.mp4}"
+  local output
+  if [ -n "$2" ]; then
+    output="$2"
+  elif (( is_url )); then
+    local url_path="${input%%[?#]*}"
+    local input_name="${url_path##*/}"
+    if [ -z "$input_name" ]; then
+      input_name="video"
+    fi
+    output="${input_name%.*}-${suffix}.mp4"
+  else
+    output="${input%.*}-${suffix}.mp4"
+  fi
 
-  if [ ! -f "$input" ]; then
+  if (( ! is_url )) && [ ! -f "$input" ]; then
     echo "File not found: $input"
     return 1
   fi
@@ -272,6 +290,11 @@ vidc() {
     -b:a "$audio_bitrate" \
     -movflags +faststart \
     "$output"
+  local ffmpeg_status=$?
+  if [ $ffmpeg_status -eq 0 ]; then
+    echo "$output"
+  fi
+  return $ffmpeg_status
 }
 # Alias
   alias l="ls -G"
