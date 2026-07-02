@@ -88,59 +88,10 @@ ls-port-udp() {
     ) | sed -E 's/ ([^ ]+):/ \1 /' | sort -k8,8 -k5,5 -k1,1 -k10,10n
   ) | awk '{ printf "%-16s %-6s %-9s %-5s %-7s %s:%s\n",$1,$2,$3,$5,$8,$9,$10 }'
 }
-c() {
-  fnm use 24
-  # Set your api keys in ~/.zprofile
-  #export ANTHROPIC_BASE_URL="https://api.z.ai/api/anthropic"
-  #export ANTHROPIC_AUTH_TOKEN="$ZAI_API_KEY"
-  #export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"
-  #export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-4.7"
-  #export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-4.7"
-  #export ANTHROPIC_BASE_URL="https://api.minimax.io/anthropic"
-  #export ANTHROPIC_AUTH_TOKEN="$MINIMAX_API_KEY"
-  #export ANTHROPIC_DEFAULT_HAIKU_MODEL="MiniMax-M2.1"
-  #export ANTHROPIC_DEFAULT_SONNET_MODEL="MiniMax-M2.1"
-  #export ANTHROPIC_BASE_URL="https://api.moonshot.ai/anthropic"
-  #export ANTHROPIC_AUTH_TOKEN="$KIMI_API_KEY"
-  #export ANTHROPIC_DEFAULT_HAIKU_MODEL="kimi-k2-thinking-turbo"
-  #export ANTHROPIC_DEFAULT_SONNET_MODEL="kimi-k2-thinking-turbo"
-  #export ANTHROPIC_DEFAULT_OPUS_MODEL="kimi-k2-thinking-turbo"
-  #export ANTHROPIC_DEFAULT_OPUS_MODEL="kimi-k2-thinking-turbo"
-  # set in ~/.claude/settings.json
-
-  args=()
-
-  # Simple manual flag handling (only for -y)
-  while [[ $# -gt 0 ]]; do
-    case "$1" in
-      -y)
-        args+=(--dangerously-skip-permissions)
-        shift
-        ;;
-      -p)
-        shift
-        prompt="$1"
-        #export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-airx"
-        export ANTHROPIC_DEFAULT_SONNET_MODEL=$ANTHROPIC_DEFAULT_HAIKU_MODEL
-        export ANTHROPIC_DEFAULT_OPUS_MODEL=$ANTHROPIC_DEFAULT_HAIKU_MODEL
-        args+=(-p "$prompt")
-        shift
-        ;;
-      --)
-        shift
-        break
-        ;;
-      *)
-        break
-        ;;
-    esac
-  done
-
-  claude "${args[@]}" "$@"
-}
 gccc() {
-  command -v gemini >/dev/null 2>&1 || {
-    echo "❌ gemini CLI not found"
+  # agy cli from google
+  command -v agy >/dev/null 2>&1 || {
+    echo "❌ agy CLI not found"
     return 127
   }
 
@@ -165,7 +116,7 @@ gccc() {
 
   local msg
   msg=$(
-    gemini -p "
+    agy -p "
       Generate ONE Conventional Commit message from the following git staged diff.
       Rules:
         - Output ONLY the commit message, no explanation
@@ -187,8 +138,9 @@ gccc() {
   read -r "?Press Enter to commit, Ctrl-C to cancel... " || return 130
   git commit -m "$msg"
 }
+
 google() {
-  gemini -p "Search google for <query>$1</query> and summarize the results"
+  agy -p "Search google for <query>$1</query> and summarize the results"
 }
 tree() {
   command tree -C "$@" | sed 's/\xc2\xa0/ /g'
@@ -325,3 +277,7 @@ source ~/.zsh-path
 # peon-ping quick controls
 alias peon="bash /Users/ike/.claude/hooks/peon-ping/peon.sh"
 [ -f /Users/ike/.claude/hooks/peon-ping/completions.bash ] && source /Users/ike/.claude/hooks/peon-ping/completions.bash
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/ike/.local/bin:$PATH"
