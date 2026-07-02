@@ -89,16 +89,25 @@ ls-port-udp() {
   ) | awk '{ printf "%-16s %-6s %-9s %-5s %-7s %s:%s\n",$1,$2,$3,$5,$8,$9,$10 }'
 }
 gccc() {
+  # suppress zsh background job spam inside this function
+  setopt local_options no_monitor no_notify
+
   # agy cli from google
   command -v agy >/dev/null 2>&1 || {
     echo "❌ agy CLI not found"
     return 127
   }
 
-  # TODO use latest node
+  command -v fnm >/dev/null 2>&1 || {
+    echo "❌ fnm not found"
+    return 127
+  }
+
   eval "$(fnm env --use-on-cd)"
+
   local OLD_NODE
   OLD_NODE=$(fnm current)
+
   fnm use 24 >/dev/null || {
     echo "❌ Node 24 not installed"
     return 1
@@ -114,22 +123,65 @@ gccc() {
     echo "⚠️  You have unstaged or untracked changes"
   fi
 
-  local msg
-  msg=$(
-    agy -p "
-      Generate ONE Conventional Commit message from the following git staged diff.
-      Rules:
-        - Output ONLY the commit message, no explanation
-        - Format: <type>(optional-scope): <subject>
-        - Subject MUST be <= 50 characters
-      Content:
-        $(git diff --cached)
-    "
-  ) || {
-    echo "❌ Failed to get commit message"
+  local tmp err
+  tmp=$(mktemp) || {
+    echo "❌ Failed to create temp file"
     fnm use "$OLD_NODE" >/dev/null
     return 1
   }
+
+  err=$(mktemp) || {
+    echo "❌ Failed to create temp error file"
+    rm -f "$tmp"
+    fnm use "$OLD_NODE" >/dev/null
+    return 1
+  }
+
+  {
+    local frames='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
+    local i=0
+
+    while true; do
+      printf "\r🤖 Generating commit message... %s" "${frames:$i:1}" >&2
+      i=$(( (i + 1) % ${#frames} ))
+      sleep 0.08
+    done
+  } &
+
+  local spin_pid=$!
+
+  agy -p "
+    Generate ONE Conventional Commit message from the following git staged diff.
+    Rules:
+      - Output ONLY the commit message, no explanation
+      - Format: <type>(optional-scope): <subject>
+      - Subject MUST be <= 50 characters
+    Content:
+      $(git diff --cached)
+  " >"$tmp" 2>"$err" &
+
+  local agy_pid=$!
+  local rc
+
+  wait "$agy_pid"
+  rc=$?
+
+  kill "$spin_pid" 2>/dev/null
+  wait "$spin_pid" 2>/dev/null
+  printf "\r\033[K" >&2
+
+  if (( rc != 0 )); then
+    echo "❌ Failed to get commit message"
+    [[ -s "$err" ]] && cat "$err" >&2
+    rm -f "$tmp" "$err"
+    fnm use "$OLD_NODE" >/dev/null
+    return 1
+  fi
+
+  local msg
+  msg=$(cat "$tmp" | tr -d '\r' | sed -E 's/^[[:space:]]+|[[:space:]]+$//g')
+
+  rm -f "$tmp" "$err"
 
   # 還原 Node 版本
   fnm use "$OLD_NODE" >/dev/null
@@ -138,7 +190,6 @@ gccc() {
   read -r "?Press Enter to commit, Ctrl-C to cancel... " || return 130
   git commit -m "$msg"
 }
-
 google() {
   agy -p "Search google for <query>$1</query> and summarize the results"
 }
